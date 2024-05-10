@@ -1,4 +1,4 @@
-# Фронтенд Code Style JoyTech. Критерии
+# Фронтенд Code Style. Критерии
 <img src="title-flex.jpg" width="70px" title="Title-flex">&nbsp;<img src="title-flex.jpg" width="70px" title="Title-flex">&nbsp;<img src="title-flex.jpg" width="70px" title="Title-flex">
 
 #### Содержание
