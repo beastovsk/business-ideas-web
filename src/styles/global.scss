@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'normalize';
+@import 'lib';
+@import 'mixins';
+
+html {
+  scroll-behavior: smooth;
+  background: #131129;
+  height: 100%;
+}
+
+body {
+  overflow-x: hidden;
+  height: 100%;
+}
+
+main {
+  height: 100%;
+}
+input {
+  color: #fff !important;
+  &::placeholder {
+    color: #68676e !important;
+  }
+}
+
+.container {
+  @include container;
+}
+
+//код для скелетонов
+@layer components {
+  .sk-wrapper {
+    @apply bg-white dark:bg-cyan-900;
+  }
+
+  .sk-item {
+    @apply bg-slate-200 dark:bg-slate-500;
+  }
+
+  .container {
+    @apply max-w-[1230px] lg:max-w-[720px] md:max-w-[540px] sm:max-w-none;
+  }
+
+  .mg-block {
+    @apply mb-44 lg:mb-16;
+  }
+}
+
+.ant-modal-body {
+  background: #131129;
+}
