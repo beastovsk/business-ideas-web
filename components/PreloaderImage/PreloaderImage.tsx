@@ -4,7 +4,6 @@ import {ImageProps} from 'next/image';
 import React, {useState} from 'react';
 import s from './PreloaderImage.module.scss';
 import Image from 'next/image';
-import {Spin} from 'antd';
 
 interface PrealoaderImageProps extends Omit<ImageProps, 'className' | 'fill' | 'onLoadingComplete' | 'style'> {
     // className?: string; // класснейм для враппера
