@@ -1,88 +1,100 @@
 'use client';
 
-import Btn from '@/components/UI/Btn/Btn';
-import {customNotification} from '@/src/helpers/customNotification';
-import {Button, Form, Input, Modal, Tooltip} from 'antd';
-import {setCookie} from 'cookies-next';
-import Link from 'next/link';
-import {useRouter} from 'next/navigation';
-import React, {FC, useState} from 'react';
-import {useMutation} from 'react-query';
-// import {ConfirmEmail, Login} from '../../modules/Marketplace/api';
-import s from './Auth.module.scss';
+import * as React from 'react';
+import {useSearchParams} from 'next/navigation';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {useForm} from 'react-hook-form';
+import * as z from 'zod';
 
-import {animated, useInView} from '@react-spring/web';
+import {cn} from '@/lib/utils';
+import {Button, buttonVariants} from '@/components/ui/button';
+import {Input} from '@/components/ui/input';
+import {Label} from '@/components/ui/label';
+import {toast} from '@/components/ui/use-toast';
+import {userAuthSchema} from '@/lib/validation/auth';
+import {Icons} from '../ui/icons';
 
-interface AuthProps {}
+interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export const Auth: FC<AuthProps> = () => {
-  // const {mutate, isLoading} = useMutation(Login);
-  const [ref, springs] = useInView(
-    () => ({
-      from: {opacity: 0.7, scale: 0.95},
-      to: {opacity: 1, scale: 1}
-    }),
-    {rootMargin: '-20% 0%'}
-  );
+type FormData = z.infer<typeof userAuthSchema>;
 
-  const router = useRouter();
+export function UserAuthForm({className, ...props}: UserAuthFormProps) {
+  const {
+    register,
+    handleSubmit,
+    formState: {errors}
+  } = useForm<FormData>({
+    resolver: zodResolver(userAuthSchema)
+  });
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
-  const onFinish = async (value) => {
-    // mutate(value, {
-    //   onSuccess: (data) => {
-    //     data.json().then((data) => {
-    //       if (!data?.message) return;
+  async function onSubmit(data: FormData) {
+    setIsLoading(true);
 
-    //       if (data?.message === 'Аккаунт не подтвержден. Проверьте вашу почту для подтверждения регистрации') {
-    //         setOpenConfirmCode(true);
-    //       }
-
-    //       if (data?.token) {
-    //         router.push('/marketplace');
-    //         setCookie('token', data?.token);
-    //       }
-
-    //       customNotification('info', 'top', 'Информация', data?.message);
-    //     });
-    //   }
+    // const signInResult = await signIn('email', {
+    //   email: data.email.toLowerCase(),
+    //   redirect: false,
+    //   callbackUrl: searchParams?.get('from') || '/dashboard'
     // });
-  };
+
+    // setIsLoading(false);
+
+    // if (!signInResult?.ok) {
+    //   return toast({
+    //     title: 'Something went wrong.',
+    //     description: 'Your sign in request failed. Please try again.',
+    //     variant: 'destructive'
+    //   });
+    // }
+
+    // return toast({
+    //   title: 'Check your email',
+    //   description: 'We sent you a login link. Be sure to check your spam too.'
+    // });
+  }
 
   return (
-    <animated.div ref={ref} style={springs} className={s.container}>
-      <h1 className='text-5xl font-semibold'>
-        <Tooltip title='Перейти на главную страницу'>
-          <Link href={'/'} className='hover:opacity-70 transition-opacity'>
-            Webi
-          </Link>
-        </Tooltip>{' '}
-        <span className='text-primary-500'>Marketplace</span>
-      </h1>
-
-      <h2 className='text-3xl font-medium mt-20'>Авторизация</h2>
-
-      <Form className='my-10' onFinish={onFinish}>
-        <Form.Item name='email' rules={[{required: true, message: 'Введите почту пользователя'}]}>
-          <Input size='large' placeholder='Почта пользователя' />
-        </Form.Item>
-        <Form.Item name='password' rules={[{required: true, min: 4, message: 'Введите ваш пароль'}]}>
-          <Input.Password size='large' placeholder='Пароль' />
-        </Form.Item>
-        <p className='text-start text-white text-sm'>
-          Нет аккаунта?{' '}
-          <Link href={'/marketplace/reg'} className='text-primary-500'>
-            Зарегистрироваться
-          </Link>
-        </p>{' '}
-        <p className='cursor-pointer text-start mt-3 text-white text-sm'>
-          {/* <span className='text-primary-500' onClick={() => setOpenResetPassword(true)}>
-            Восстановить пароль
-          </span> */}
-        </p>
-        {/* <Btn loading={isLoading} htmlTypeButton='submit' className='mt-10'>
-          Войти
-        </Btn> */}
-      </Form>
-    </animated.div>
+    <div className={cn('grid gap-6', className)} {...props}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className='grid gap-2'>
+          <div className='grid gap-1'>
+            <Label className='sr-only' htmlFor='email'>
+              Почта
+            </Label>
+            <Input
+              id='email'
+              placeholder='yourtemplatemail@mail.ru'
+              type='email'
+              autoCapitalize='none'
+              autoComplete='email'
+              autoCorrect='off'
+              disabled={isLoading}
+              {...register('email')}
+            />
+            {errors?.email && <p className='px-1 text-xs text-red-600'>{errors.email.message}</p>}
+          </div>
+          <div className='grid gap-1'>
+            <Label className='sr-only' htmlFor='password'>
+              Пароль
+            </Label>
+            <Input
+              id='password'
+              placeholder='******'
+              type='password'
+              autoCapitalize='none'
+              autoComplete='password'
+              autoCorrect='off'
+              disabled={isLoading}
+              {...register('password')}
+            />
+            {errors?.password && <p className='px-1 text-xs text-red-600'>{errors.password.message}</p>}
+          </div>
+          <Button disabled={isLoading}>
+            {isLoading && <Icons.spinner className='mr-2 h-4 w-4 animate-spin' />}
+            Войти через почту
+          </Button>
+        </div>
+      </form>
+    </div>
   );
-};
+}

@@ -15,7 +15,7 @@ export const getTypeName = (type: number) => {
 export const formatProductPrice = (price: number) => {
   const RURubles = new Intl.NumberFormat('ru-RU', {
     style: 'currency',
-    currency: 'USD'
+    currency: 'RUB'
   });
 
   return RURubles.format(price);

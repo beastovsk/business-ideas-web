@@ -5,7 +5,9 @@ import ClientProvider from '@/modules/ClientProvider';
 import React from 'react';
 import Head from 'next/head';
 
+
 import YandexMetrika from 'next-yandex-metrika';
+import { ThemeButton } from '@/components/ThemeButton/ThemeButton';
 
 const gilroy = localFont({
   src: [
@@ -34,10 +36,10 @@ const gilroy = localFont({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Webi',
-    template: `%s | Webi`
+    default: 'Business Ideas',
+    template: `%s | Business Ideas`
   },
-  description: 'Купить веб сайт или веб приложение',
+  description: 'Помогаем найти продукт для бизнеса',
   keywords: [
     'веб приложение',
     'создание сайтов',
@@ -65,8 +67,8 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang='en'>
       <Head>
-        <meta name='yandex-verification' content='c4492d1cc4639f2c' />
-        <YandexMetrika yid={94315700} clickmap={true} trackLinks={true} accurateTrackBounce={true} webvisor={true} />
+        {/* <meta name='yandex-verification' content='c4492d1cc4639f2c' /> */}
+        {/* <YandexMetrika yid={94315700} clickmap={true} trackLinks={true} accurateTrackBounce={true} webvisor={true} /> */}
         <meta name='viewport' content='width=device-width, initial-scale=1.0' />
       </Head>
       <body>
