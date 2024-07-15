@@ -1,23 +1,24 @@
 import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
+import {formatProductPrice} from '@/src/helpers/hooks';
 import {Album, BookMarked, DollarSign, LayoutDashboard, Reply} from 'lucide-react';
 
 export const Cards = () => {
   const cards = [
     {
-      title: 'Потрачено средств',
-      subtitle: '1,200 RUB',
+      title: 'Потенциальный доход с идей',
+      subtitle: formatProductPrice(1200000),
       description: 'за все время',
       icon: <DollarSign className='h-4 w-4 text-muted-foreground' />
     },
     {
       title: 'Количество идей для продуктов',
-      subtitle: '+23',
+      subtitle: 23,
       description: 'за все время',
       icon: <Album className='h-4 w-4 text-muted-foreground' />
     },
     {
-      title: 'Количество успешных идей',
-      subtitle: '+2',
+      title: 'Количество избранных идей',
+      subtitle: 3,
       description: 'за все время',
       icon: <LayoutDashboard className='h-4 w-4 text-muted-foreground' />
     }
