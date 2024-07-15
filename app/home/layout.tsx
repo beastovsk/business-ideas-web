@@ -1,4 +1,5 @@
 import {Header} from '@/components/Header/Header';
+import {DynamicBreadcrumb} from '@/modules/UsageComponents/Breadcrumb/Breadcrumb';
 import React from 'react';
 
 export default function RootLayout({children}: {children: React.ReactNode}) {

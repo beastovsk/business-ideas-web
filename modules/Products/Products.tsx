@@ -1,3 +1,4 @@
+import {GenerateModal} from '@/components/GenerateModal/GenerateModal';
 import {columns} from '@/components/ProductsTable/columns';
 import {DataTable} from '@/components/ProductsTable/data-table';
 import {tasks} from '@/components/ProductsTable/tasks';
@@ -12,7 +13,7 @@ export const Products = () => {
           <p className='text-muted-foreground'>Здесь находятся все ваши сгенерированные продукты</p>
         </div>
         <div className='flex items-center space-x-2'>
-          <Button>Сгенерировать продукт</Button>
+          <GenerateModal />
         </div>
       </div>
       <DataTable data={tasks} columns={columns} />

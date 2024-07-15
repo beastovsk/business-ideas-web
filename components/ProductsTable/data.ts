@@ -8,6 +8,7 @@ import {
   QuestionMarkCircledIcon,
   StopwatchIcon
 } from '@radix-ui/react-icons';
+import {PartyPopper, Star} from 'lucide-react';
 
 export const labels = [
   {
@@ -26,29 +27,24 @@ export const labels = [
 
 export const statuses = [
   {
-    value: 'backlog',
-    label: 'Backlog',
-    icon: QuestionMarkCircledIcon
+    value: 'created',
+    label: 'Создано',
+    icon: PartyPopper
   },
   {
-    value: 'todo',
-    label: 'Todo',
-    icon: CircleIcon
+    value: 'favourite',
+    label: 'Избранное',
+    icon: Star
   },
   {
-    value: 'in progress',
-    label: 'In Progress',
+    value: 'in_process',
+    label: 'В процессе',
     icon: StopwatchIcon
   },
   {
     value: 'done',
-    label: 'Done',
+    label: 'Завершено',
     icon: CheckCircledIcon
-  },
-  {
-    value: 'canceled',
-    label: 'Canceled',
-    icon: CrossCircledIcon
   }
 ];
 
