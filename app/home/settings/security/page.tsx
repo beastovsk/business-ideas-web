@@ -1,7 +1,6 @@
-import {Navigation} from '@/modules/Settings/Navigation/Navigation';
-import {Profile} from '@/modules/Settings/Profile/Profile';
+import {Security} from '@/modules/Settings/Security/Security';
 import React from 'react';
 
 export default async function Page() {
-  return <Profile />;
+  return <Security />;
 }

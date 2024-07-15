@@ -4,7 +4,7 @@ import {BriefcaseBusiness, CirclePlus, CircleUser, Menu} from 'lucide-react';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {Button} from '../ui/button';
-import {Sheet, SheetContent, SheetTrigger} from '../ui/sheet';
+import {Sheet, SheetClose, SheetContent, SheetTrigger} from '../ui/sheet';
 import {usePathname} from 'next/navigation';
 
 export const Header = () => {
@@ -13,7 +13,6 @@ export const Header = () => {
   const getLinkClassName = (path) => {
     return pathname === path ? 'text-foreground' : 'text-muted-foreground';
   };
-
 
   return (
     <header className='sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6'>
@@ -57,27 +56,35 @@ export const Header = () => {
               <BriefcaseBusiness className='h-6 w-6' />
               <span className='sr-only'>Business Ideas</span>
             </Link>
-            <Link href='/home' className={`${getLinkClassName('/home/')} transition-colors hover:text-foreground`}>
-              Главная
-            </Link>
-            <Link
-              href='/home/products'
-              className={`${getLinkClassName('/home/products/')} transition-colors hover:text-foreground`}
-            >
-              Продукты
-            </Link>
-            <Link
-              href='/home/operations'
-              className={`${getLinkClassName('/home/operations/')} transition-colors hover:text-foreground`}
-            >
-              Операции
-            </Link>
-            <Link
-              href='/home/settings'
-              className={`${getLinkClassName('/home/settings/')} transition-colors hover:text-foreground`}
-            >
-              Настройки
-            </Link>
+            <SheetClose asChild>
+              <Link href='/home' className={`${getLinkClassName('/home/')} transition-colors hover:text-foreground`}>
+                Главная
+              </Link>
+            </SheetClose>
+            <SheetClose asChild>
+              <Link
+                href='/home/products'
+                className={`${getLinkClassName('/home/products/')} transition-colors hover:text-foreground`}
+              >
+                Продукты
+              </Link>
+            </SheetClose>
+            <SheetClose asChild>
+              <Link
+                href='/home/operations'
+                className={`${getLinkClassName('/home/operations/')} transition-colors hover:text-foreground`}
+              >
+                Операции
+              </Link>
+            </SheetClose>
+            <SheetClose asChild>
+              <Link
+                href='/home/settings'
+                className={`${getLinkClassName('/home/settings/')} transition-colors hover:text-foreground`}
+              >
+                Настройки
+              </Link>
+            </SheetClose>
           </nav>
         </SheetContent>
       </Sheet>

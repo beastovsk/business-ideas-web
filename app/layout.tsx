@@ -5,9 +5,9 @@ import ClientProvider from '@/modules/ClientProvider';
 import React from 'react';
 import Head from 'next/head';
 
-
 import YandexMetrika from 'next-yandex-metrika';
-import { ThemeButton } from '@/components/ThemeButton/ThemeButton';
+import {ThemeButton} from '@/components/ThemeButton/ThemeButton';
+import {keywords} from '@/src/helpers/keywords';
 
 const gilroy = localFont({
   src: [
@@ -36,18 +36,12 @@ const gilroy = localFont({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Business Ideas',
-    template: `%s | Business Ideas`
+    default: 'Startup Idea',
+    template: `%s | Startup Idea`
   },
-  description: 'Помогаем найти продукт для бизнеса',
-  keywords: [
-    'веб приложение',
-    'создание сайтов',
-    'разработка сайтов',
-    'landing',
-    'e commerce',
-    'самый дешевый интернет магазин'
-  ],
+  description:
+    'Startup Idea - инновационный сервис, который использует искусственный интеллект для создания уникальных продуктов. Оптимизируйте ваш бизнес с помощью передовых технологий генерации идей и продуктов. Начните внедрять будущее уже сегодня!',
+  keywords: keywords,
   robots: {
     index: true,
     follow: true
