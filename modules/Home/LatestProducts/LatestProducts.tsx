@@ -13,7 +13,7 @@ const productsList = [
 export const LatestProducts = () => {
   return (
     <Card className='xl:col-span-2' x-chunk='dashboard-01-chunk-4'>
-      <CardHeader className='flex flex-row items-center'>
+      <CardHeader className='flex flex-col md:flex-row items-end md:items-center'>
         <div className='grid gap-2'>
           <CardTitle>Последние продукты</CardTitle>
           <CardDescription>Список последних сгенерированных продуктов</CardDescription>

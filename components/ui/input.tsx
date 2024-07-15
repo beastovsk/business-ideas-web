@@ -16,7 +16,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({className, type, 
   const isPasswordType = type === 'password';
 
   return (
-    <div className='relative'>
+    <div className='relative w-full sm:w-inherit'>
       <input
         type={isPasswordType && showPassword ? 'text' : type}
         className={cn(

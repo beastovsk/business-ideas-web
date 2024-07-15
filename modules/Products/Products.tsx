@@ -5,7 +5,7 @@ import {Button} from '@/components/ui/button';
 
 export const Products = () => {
   return (
-    <div className='h-full flex-1 flex-col space-y-8 p-8 flex'>
+    <div className='h-full flex-1 flex-col space-y-8 p-0 flex'>
       <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2'>
         <div>
           <h2 className='text-2xl font-bold tracking-tight'>Список продуктов</h2>

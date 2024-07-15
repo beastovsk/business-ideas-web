@@ -19,12 +19,12 @@ export function DataTableToolbar<TData>({table}: DataTableToolbarProps<TData>) {
 
   return (
     <div className='flex items-center justify-between'>
-      <div className='flex flex-1 items-center space-x-2'>
+      <div className='flex flex-1 items-center space-x-2 w-full'>
         <Input
           placeholder='Поиск продукта'
           value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
           onChange={(event) => table.getColumn('title')?.setFilterValue(event.target.value)}
-          className='h-8 w-[150px] lg:w-[250px]'
+          className='h-8 sm:w-[150px] lg:w-[250px] w-full'
         />
         {/* {table.getColumn('status') && (
           <DataTableFacetedFilter column={table.getColumn('status')} title='Status' options={statuses} />

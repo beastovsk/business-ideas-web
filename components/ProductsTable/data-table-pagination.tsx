@@ -14,9 +14,9 @@ export function DataTablePagination<TData>({table}: DataTablePaginationProps<TDa
       <div className='flex-1 text-sm text-muted-foreground hidden sm:flex'>
         {table.getFilteredRowModel().rows.length} продуктов всего.
       </div>
-      <div className='flex items-center space-x-6 lg:space-x-8'>
+      <div className='flex items-center space-x-6 lg:space-x-8 flex-wrap'>
         <div className='flex items-center space-x-2'>
-          <p className='text-sm font-medium'>Строк на страницу</p>
+          <p className='text-sm font-medium whitespace-nowrap'>Строк на страницу</p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
