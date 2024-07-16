@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import {ThemeProvider, useTheme} from 'next-themes';
+import {ThemeProvider} from 'next-themes';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import {Toaster} from '@/components/ui/toaster';
 import {ThemeButton} from '@/components/ThemeButton/ThemeButton';

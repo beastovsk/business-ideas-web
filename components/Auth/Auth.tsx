@@ -1,16 +1,14 @@
 'use client';
 
 import * as React from 'react';
-import {useSearchParams} from 'next/navigation';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useForm} from 'react-hook-form';
 import * as z from 'zod';
 
 import {cn} from '@/lib/utils';
-import {Button, buttonVariants} from '@/components/ui/button';
+import {Button} from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
 import {Label} from '@/components/ui/label';
-import {toast} from '@/components/ui/use-toast';
 import {userAuthSchema} from '@/lib/validation/auth';
 import {Icons} from '../ui/icons';
 

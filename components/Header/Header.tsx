@@ -1,11 +1,11 @@
 'use client';
 
-import {BriefcaseBusiness, CirclePlus, CircleUser, Menu} from 'lucide-react';
+import {BriefcaseBusiness, CircleUser, Menu} from 'lucide-react';
 import Link from 'next/link';
-import {useRouter} from 'next/router';
 import {Button} from '../ui/button';
 import {Sheet, SheetClose, SheetContent, SheetTrigger} from '../ui/sheet';
 import {usePathname} from 'next/navigation';
+import {DonateModal} from '../DonateModal/DonateModal';
 
 export const Header = () => {
   const pathname = usePathname();
@@ -90,9 +90,7 @@ export const Header = () => {
       </Sheet>
       <div className='flex justify-end w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4'>
         <div className='flex gap-2 items-center'>
-          <Button variant='ghost' onClick={() => {}}>
-            <CirclePlus />
-          </Button>
+          <DonateModal />
           100 RUB
         </div>
         <Button variant='secondary' size='icon' className='rounded-full'>

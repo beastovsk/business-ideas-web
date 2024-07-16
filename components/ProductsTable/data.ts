@@ -1,27 +1,10 @@
-import {
-  ArrowDownIcon,
-  ArrowRightIcon,
-  ArrowUpIcon,
-  CheckCircledIcon,
-  CircleIcon,
-  CrossCircledIcon,
-  QuestionMarkCircledIcon,
-  StopwatchIcon
-} from '@radix-ui/react-icons';
-import {PartyPopper, Star} from 'lucide-react';
+import {ArrowDownIcon, ArrowRightIcon, ArrowUpIcon, CheckCircledIcon, StopwatchIcon} from '@radix-ui/react-icons';
+import {PartyPopper, Undo} from 'lucide-react';
 
 export const labels = [
   {
-    value: 'bug',
-    label: 'Bug'
-  },
-  {
-    value: 'feature',
-    label: 'Feature'
-  },
-  {
-    value: 'documentation',
-    label: 'Documentation'
+    value: 'favourite',
+    label: 'Избранное'
   }
 ];
 
@@ -32,11 +15,6 @@ export const statuses = [
     icon: PartyPopper
   },
   {
-    value: 'favourite',
-    label: 'Избранное',
-    icon: Star
-  },
-  {
     value: 'in_process',
     label: 'В процессе',
     icon: StopwatchIcon
@@ -45,6 +23,11 @@ export const statuses = [
     value: 'done',
     label: 'Завершено',
     icon: CheckCircledIcon
+  },
+  {
+    value: 'closed',
+    label: 'Закрыт',
+    icon: Undo
   }
 ];
 

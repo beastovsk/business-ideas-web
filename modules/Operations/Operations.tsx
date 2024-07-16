@@ -1,18 +1,7 @@
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui/table';
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from '@/components/ui/card';
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
+import {Card, CardContent, CardFooter, CardHeader} from '@/components/ui/card';
+
 import {Badge} from '@/components/ui/badge';
-import Image from 'next/image';
-import {Button} from '@/components/ui/button';
-import {MoreHorizontal} from 'lucide-react';
 import {formatProductPrice} from '@/src/helpers/hooks';
 import {Avatar} from '@/components/ui/avatar';
 
@@ -78,7 +67,7 @@ export const Operations = () => {
             </TableHeader>
             <TableBody>
               {operationsList.map(({amount, date, id, status, type}) => (
-                <TableRow>
+                <TableRow key={id}>
                   <TableCell>{id}</TableCell>
                   <TableCell className='font-medium'>{type}</TableCell>
                   <TableCell className='hidden md:table-cell'>

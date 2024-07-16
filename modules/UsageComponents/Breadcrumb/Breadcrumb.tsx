@@ -1,7 +1,6 @@
 'use client';
 
 import {useEffect, useState, Fragment} from 'react';
-import {Slash} from 'lucide-react';
 import {usePathname} from 'next/navigation';
 
 import {
@@ -36,12 +35,9 @@ export function DynamicBreadcrumb() {
   return (
     <Breadcrumb>
       <BreadcrumbList>
-        <BreadcrumbItem>
-          <BreadcrumbLink href='/'>Startup Idea</BreadcrumbLink>
-        </BreadcrumbItem>
         {breadcrumbItems.map((item, index) => (
           <Fragment key={index}>
-            <BreadcrumbSeparator>{/* <Slash /> */}</BreadcrumbSeparator>
+            {index !== 0 ? <BreadcrumbSeparator /> : null}
             <BreadcrumbItem>
               {item.isLast ? (
                 <BreadcrumbPage>{item.text}</BreadcrumbPage>

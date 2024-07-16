@@ -15,7 +15,6 @@ import {Input} from '@/components/ui/input';
 import {Label} from '@/components/ui/label';
 import {Textarea} from '@/components/ui/textarea';
 import {Select, SelectValue, SelectTrigger, SelectContent, SelectItem} from '@/components/ui/select';
-import {generateProductSchema} from '@/lib/validation/generate';
 import {ScrollArea} from '../ui/scroll-area';
 import Loading from '@/app/loading';
 

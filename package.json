@@ -39,6 +39,7 @@
         "@radix-ui/react-separator": "^1.1.0",
         "@radix-ui/react-slot": "^1.1.0",
         "@radix-ui/react-toast": "^1.2.1",
+        "@radix-ui/react-toggle": "^1.1.0",
         "@react-spring/web": "^9.7.3",
         "@tanstack/react-table": "^8.19.3",
         "@types/node": "18.11.18",
