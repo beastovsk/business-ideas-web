@@ -1,5 +1,3 @@
-import {Navigation} from '@/modules/Settings/Navigation/Navigation';
-import {Profile} from '@/modules/Settings/Profile/Profile';
 import {DynamicBreadcrumb} from '@/modules/UsageComponents/Breadcrumb/Breadcrumb';
 import React from 'react';
 

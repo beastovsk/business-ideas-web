@@ -4,6 +4,7 @@ import {labels, priorities, statuses} from './data';
 import {DataTableRowActions} from './data-table-row-actions';
 import {Badge} from '../ui/badge';
 import {DataTableColumnHeader} from './data-table-column-header';
+import Link from 'next/link';
 
 export const columns = [
   {
@@ -20,10 +21,13 @@ export const columns = [
       const label = labels.find((label) => label.value === row.original.label);
 
       return (
-        <div className='flex space-x-2'>
+        <Link
+          href={`/home/products/${row.getValue('id')}`}
+          className='flex space-x-2 cursor-pointer hover:opacity-70 transition-opacity'
+        >
           {label && <Badge variant='outline'>{label.label}</Badge>}
           <span className='max-w-[500px] truncate font-medium'>{row.getValue('title')}</span>
-        </div>
+        </Link>
       );
     }
   },

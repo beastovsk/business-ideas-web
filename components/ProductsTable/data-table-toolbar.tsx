@@ -6,8 +6,6 @@ import {Table} from '@tanstack/react-table';
 import {Button} from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
 
-import {priorities, statuses} from './data';
-import {DataTableFacetedFilter} from './data-table-faceted-filter';
 import {DataTableViewOptions} from './data-table-view-options';
 
 interface DataTableToolbarProps<TData> {
@@ -26,6 +24,7 @@ export function DataTableToolbar<TData>({table}: DataTableToolbarProps<TData>) {
           onChange={(event) => table.getColumn('title')?.setFilterValue(event.target.value)}
           className='h-8 sm:w-[150px] lg:w-[250px] w-full'
         />
+        {/* data attrs disabled.. TODO */}
         {/* {table.getColumn('status') && (
           <DataTableFacetedFilter column={table.getColumn('status')} title='Status' options={statuses} />
         )}

@@ -58,7 +58,7 @@ export const DonateModal = () => {
       <DialogContent className='sm:max-w-[500px]'>
         <DialogHeader>
           <DialogTitle>Пополнение баланса</DialogTitle>
-          <DialogDescription>Заполните форму ниже, чтобы сделать пожертвование</DialogDescription>
+          <DialogDescription>Заполните форму ниже, чтобы пополнить баланс</DialogDescription>
         </DialogHeader>
         <ScrollArea>
           <form className='space-y-5 px-3' onSubmit={handleSubmit(onSubmit)}>

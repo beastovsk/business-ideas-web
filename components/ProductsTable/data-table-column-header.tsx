@@ -10,6 +10,7 @@ import {
 } from '../ui/dropdown-menu';
 import {Button} from '../ui/button';
 import {Column} from '@tanstack/react-table';
+import React from 'react';
 
 interface DataTableColumnHeaderProps<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>;

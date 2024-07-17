@@ -77,7 +77,8 @@ export function DataTableFacetedFilter<TData, TValue>({
                 return (
                   <CommandItem
                     key={option.value}
-                    onSelect={() => {
+                    onClick={() => {
+                      console.log(true);
                       if (isSelected) {
                         selectedValues.delete(option.value);
                       } else {
@@ -86,6 +87,19 @@ export function DataTableFacetedFilter<TData, TValue>({
                       const filterValues = Array.from(selectedValues);
                       column?.setFilterValue(filterValues.length ? filterValues : undefined);
                     }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        if (isSelected) {
+                          selectedValues.delete(option.value);
+                        } else {
+                          selectedValues.add(option.value);
+                        }
+                        const filterValues = Array.from(selectedValues);
+                        column?.setFilterValue(filterValues.length ? filterValues : undefined);
+                      }
+                    }}
+                    role='button'
+                    tabIndex={1}
                   >
                     <div
                       className={cn(
@@ -110,10 +124,7 @@ export function DataTableFacetedFilter<TData, TValue>({
               <>
                 <CommandSeparator />
                 <CommandGroup>
-                  <CommandItem
-                    onSelect={() => column?.setFilterValue(undefined)}
-                    className='justify-center text-center'
-                  >
+                  <CommandItem onClick={() => column?.setFilterValue(undefined)} className='justify-center text-center'>
                     Отчистить фильтры
                   </CommandItem>
                 </CommandGroup>
