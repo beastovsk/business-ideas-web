@@ -112,7 +112,7 @@ export const DonateModal = () => {
             <div>
               <Label htmlFor='amount'>Сумма пополнения</Label>
               <Controller name='amount' control={control} render={({field}) => <Input id='amount' {...field} />} />
-              {errors.phoneNumber && <p className='text-red-500 text-sm'>{errors.amount.message}</p>}
+              {errors.amount && <p className='text-red-500 text-sm'>{errors.amount.message}</p>}
             </div>
 
             <DialogFooter className='mt-10'>

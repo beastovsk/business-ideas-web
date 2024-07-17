@@ -24,8 +24,9 @@ import {useState} from 'react';
 import {Input} from '../ui/input';
 import {Textarea} from '../ui/textarea';
 
-export const Product = () => {
+export const Product = ({id}) => {
   const router = useRouter();
+  console.log(id);
 
   const [productDetails, setProductDetails] = useState({
     productName: 'Gamer Gear Pro Controller',

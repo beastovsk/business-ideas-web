@@ -1,5 +1,5 @@
 import {Product} from '@/components/Product/Product';
 
-export default async function Page() {
-  return <Product />;
+export default function ProductDetail({params}: {params: {id: string}}) {
+  return <Product id={params.id} />;
 }
