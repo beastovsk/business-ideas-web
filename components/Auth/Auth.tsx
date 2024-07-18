@@ -11,12 +11,22 @@ import {Input} from '@/components/ui/input';
 import {Label} from '@/components/ui/label';
 import {userAuthSchema} from '@/lib/validation/auth';
 import {Icons} from '../ui/icons';
+import {useMutation} from 'react-query';
+import {ConfirmEmail, LoginRequest, RegRequest} from '@/data/api/auth';
+import {usePathname, useRouter} from 'next/navigation';
+import {useToast} from '../ui/use-toast';
+import {setCookie} from 'cookies-next';
+import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle} from '../ui/dialog';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 type FormData = z.infer<typeof userAuthSchema>;
 
 export function UserAuthForm({className, ...props}: UserAuthFormProps) {
+  const [confirmOpen, setConfirmOpen] = React.useState(false);
+  const [email, setEmail] = React.useState('');
+  const [confirmCode, setConfirmCode] = React.useState('');
+  const pathname = usePathname();
   const {
     register,
     handleSubmit,
@@ -24,32 +34,54 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
   } = useForm<FormData>({
     resolver: zodResolver(userAuthSchema)
   });
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const {mutate: login, isLoading: isLoginLoading} = useMutation(LoginRequest);
+  const {mutate: reg, isLoading: isRegLoading} = useMutation(RegRequest);
+  const {mutate: confirm, isLoading: isConfirmLoading} = useMutation(ConfirmEmail);
+
+  const {toast} = useToast();
+  const {push} = useRouter();
+
+  const isLoading = isLoginLoading || isRegLoading;
+
+  const handleAuthRequest = (data) => {
+    if (
+      data.message === 'Подтверждение регистрации отправлено на вашу почту' ||
+      data.message === 'Аккаунт не подтвержден. Проверьте вашу почту для подтверждения регистрации' ||
+      data.message === 'Подтвердите почту'
+    ) {
+      setConfirmOpen(true);
+    }
+    if (data.message) toast({title: 'Уведомление', description: data.message});
+    if (data.token) {
+      setCookie('token', data.token);
+      push('/home');
+    }
+  };
 
   async function onSubmit(data: FormData) {
-    setIsLoading(true);
+    setEmail(data.email);
+    if (pathname === '/register/') {
+      return reg(data, {
+        onSuccess: (data) => handleAuthRequest(data)
+      });
+    }
 
-    // const signInResult = await signIn('email', {
-    //   email: data.email.toLowerCase(),
-    //   redirect: false,
-    //   callbackUrl: searchParams?.get('from') || '/dashboard'
-    // });
-
-    // setIsLoading(false);
-
-    // if (!signInResult?.ok) {
-    //   return toast({
-    //     title: 'Something went wrong.',
-    //     description: 'Your sign in request failed. Please try again.',
-    //     variant: 'destructive'
-    //   });
-    // }
-
-    // return toast({
-    //   title: 'Check your email',
-    //   description: 'We sent you a login link. Be sure to check your spam too.'
-    // });
+    login(data, {
+      onSuccess: (data) => {
+        handleAuthRequest(data);
+      }
+    });
   }
+
+  const onConfirmCode = () => {
+    confirm({confirmToken: confirmCode, email} as any, {
+      onSuccess: (data) => {
+        handleAuthRequest(data);
+        setEmail('');
+        setConfirmCode('');
+      }
+    });
+  };
 
   return (
     <div className={cn('grid gap-6', className)} {...props}>
@@ -89,10 +121,34 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
           </div>
           <Button disabled={isLoading}>
             {isLoading && <Icons.spinner className='mr-2 h-4 w-4 animate-spin' />}
-            Войти через почту
+            {pathname === '/register/' ? 'Создать аккаунт' : 'Войти'} через почту
           </Button>
         </div>
       </form>
+
+      <Dialog open={confirmOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Подтверждение почты</DialogTitle>
+            <DialogDescription>
+              Вам на почты был отправлен код для подтверждения, вставьте его пожалуйста в форму ниже.
+            </DialogDescription>
+          </DialogHeader>
+
+          <Input
+            disabled={isConfirmLoading}
+            value={confirmCode}
+            onChange={(e) => setConfirmCode(e.target.value)}
+            placeholder='8 символов'
+            maxLength={8}
+            className='text-center'
+          />
+          <Button disabled={isConfirmLoading} onClick={onConfirmCode}>
+            {isConfirmLoading && <Icons.spinner className='mr-2 h-4 w-4 animate-spin' />}
+            Отправить
+          </Button>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
