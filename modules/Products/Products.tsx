@@ -1,10 +1,21 @@
+'use client';
+
 import {GenerateModal} from '@/components/GenerateModal/GenerateModal';
+import {Product} from '@/components/Product/Product';
 import {columns} from '@/components/ProductsTable/columns';
 import {DataTable} from '@/components/ProductsTable/data-table';
 import {tasks} from '@/components/ProductsTable/tasks';
-import {Button} from '@/components/ui/button';
+import {useSearchParams} from 'next/navigation';
 
 export const Products = () => {
+  const searchParams = useSearchParams();
+
+  const id = searchParams.get('id');
+
+  if (id) {
+    return <Product id={id} />;
+  }
+  
   return (
     <div className='h-full flex-1 flex-col space-y-8 p-0 flex'>
       <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2'>

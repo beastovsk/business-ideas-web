@@ -22,7 +22,7 @@ export const columns = [
 
       return (
         <Link
-          href={`/home/products/${row.getValue('id')}`}
+          href={`/home/products?id=${row.getValue('id')}`}
           className='flex space-x-2 cursor-pointer hover:opacity-70 transition-opacity'
         >
           {label && <Badge variant='outline'>{label.label}</Badge>}
