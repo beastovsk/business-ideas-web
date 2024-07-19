@@ -17,12 +17,20 @@ import {Textarea} from '@/components/ui/textarea';
 import {Select, SelectValue, SelectTrigger, SelectContent, SelectItem} from '@/components/ui/select';
 import {ScrollArea} from '../ui/scroll-area';
 import Loading from '@/app/loading';
+import {useMutation} from 'react-query';
+import {generateProduct} from '@/data/api/products';
+import {useToast} from '../ui/use-toast';
+import {useRouter} from 'next/navigation';
 
 export const GenerateModal = () => {
+  const {mutate, isLoading, isSuccess} = useMutation(generateProduct);
+  const {push} = useRouter();
+  const {toast} = useToast();
   const [niche, setNiche] = useState('');
   const [showOtherNiche, setShowOtherNiche] = useState(false);
   const [targetAudience, setTargetAudience] = useState('');
   const [showProfession, setShowProfession] = useState(false);
+  const [loadingIndex, setLoadingIndex] = useState(0);
   const [formData, setFormData] = useState({
     niche: '',
     otherNiche: '',
@@ -49,9 +57,6 @@ export const GenerateModal = () => {
     'Создаем уникальное предложение продукта'
   ];
 
-  const [isLoading, setLoading] = useState(false);
-  const [loadingIndex, setLoadingIndex] = useState(0);
-
   useEffect(() => {
     if (isLoading) {
       const interval = setInterval(() => {
@@ -62,12 +67,15 @@ export const GenerateModal = () => {
   }, [isLoading, loadingText.length]);
 
   const onSubmit = () => {
-    setLoading(true);
-    console.log(formData);
-
-    setTimeout(() => {
-      setLoading(false);
-    }, 10000);
+    mutate(
+      {...formData},
+      {
+        onSuccess: (data) => {
+          if (data.message) toast({title: 'Уведомление о генерации продукта', description: data.message});
+          push(`/home/products?id=${data.id}`);
+        }
+      }
+    );
   };
 
   const handleNicheChange = (value) => {
