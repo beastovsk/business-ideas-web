@@ -20,13 +20,15 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/c
 
 import {DataTablePagination} from './data-table-pagination';
 import {DataTableToolbar} from './data-table-toolbar';
+import {Skeleton} from '../ui/skeleton';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  isLoading: boolean;
 }
 
-export function DataTable<TData, TValue>({columns, data}: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({columns, data, isLoading}: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -73,6 +75,24 @@ export function DataTable<TData, TValue>({columns, data}: DataTableProps<TData, 
             ))}
           </TableHeader>
           <TableBody>
+            {isLoading
+              ? Array.from(Array(5).keys()).map(() => (
+                  <TableRow>
+                    <TableCell>
+                      <Skeleton className='h-5 w-[250px]' />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className='h-5 w-[250px]' />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className='h-5 w-[250px]' />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className='h-5 w-[250px]' />
+                    </TableCell>
+                  </TableRow>
+                ))
+              : null}
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
@@ -81,13 +101,13 @@ export function DataTable<TData, TValue>({columns, data}: DataTableProps<TData, 
                   ))}
                 </TableRow>
               ))
-            ) : (
+            ) : !isLoading ? (
               <TableRow>
                 <TableCell colSpan={columns.length} className='h-24 text-center'>
                   Нет результатов.
                 </TableCell>
               </TableRow>
-            )}
+            ) : null}
           </TableBody>
         </Table>
       </div>

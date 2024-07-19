@@ -6,22 +6,38 @@ import {Icons} from '@/components/ui/icons';
 import {Input} from '@/components/ui/input';
 import {Label} from '@/components/ui/label';
 import {Separator} from '@/components/ui/separator';
+import {useToast} from '@/components/ui/use-toast';
+import {ChangePassword} from '@/data/api/user';
 import {changePasswordSchema} from '@/lib/validation/password';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useForm} from 'react-hook-form';
+import {useMutation} from 'react-query';
 import * as z from 'zod';
 
 type FormData = z.infer<typeof changePasswordSchema>;
 
 export const Security = () => {
+  const {mutate, isLoading} = useMutation(ChangePassword);
+  const {toast} = useToast();
+
   const {
     register,
     handleSubmit,
-    formState: {errors, }
+    formState: {errors}
   } = useForm<FormData>({
     resolver: zodResolver(changePasswordSchema)
   });
-  async function onSubmit(data: FormData) {}
+
+  async function onSubmit({currentPassword, password}: FormData) {
+    mutate(
+      {currentPassword, password},
+      {
+        onSuccess: (data) => {
+          if (data.message) toast({title: 'Уведомление о смене пароля', description: data.message});
+        }
+      }
+    );
+  }
 
   return (
     <div className='grid gap-6'>
@@ -78,7 +94,7 @@ export const Security = () => {
                   autoCapitalize='none'
                   autoComplete='password'
                   autoCorrect='off'
-                  disabled={false}
+                  disabled={isLoading}
                   {...register('confirmPassword')}
                 />
                 {errors?.confirmPassword && (
@@ -86,8 +102,8 @@ export const Security = () => {
                 )}
               </div>
               <Separator className='my-3' />
-              <Button disabled={false} className='w-max'>
-                {false && <Icons.spinner className='mr-2 h-4 w-4 animate-spin' />}
+              <Button disabled={isLoading} className='w-max'>
+                {isLoading && <Icons.spinner className='mr-2 h-4 w-4 animate-spin' />}
                 Подтвердить
               </Button>
             </div>

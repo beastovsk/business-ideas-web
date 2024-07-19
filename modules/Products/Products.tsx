@@ -4,18 +4,20 @@ import {GenerateModal} from '@/components/GenerateModal/GenerateModal';
 import {Product} from '@/components/Product/Product';
 import {columns} from '@/components/ProductsTable/columns';
 import {DataTable} from '@/components/ProductsTable/data-table';
-import {tasks} from '@/components/ProductsTable/tasks';
+import {getAllProducts} from '@/data/api/products';
 import {useSearchParams} from 'next/navigation';
+import {useQuery} from 'react-query';
 
 export const Products = () => {
   const searchParams = useSearchParams();
+  const {data, isLoading, isSuccess} = useQuery('products', () => getAllProducts({isLatest: false}));
 
   const id = searchParams.get('id');
 
   if (id) {
     return <Product id={id} />;
   }
-  
+
   return (
     <div className='h-full flex-1 flex-col space-y-8 p-0 flex'>
       <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2'>
@@ -27,7 +29,7 @@ export const Products = () => {
           <GenerateModal />
         </div>
       </div>
-      <DataTable data={tasks} columns={columns} />
+      <DataTable isLoading={isLoading} data={isSuccess ? data.products : []} columns={columns} />
     </div>
   );
 };

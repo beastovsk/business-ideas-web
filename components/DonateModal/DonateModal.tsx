@@ -19,6 +19,10 @@ import {Label} from '@/components/ui/label';
 import {Toggle} from '@/components/ui/toggle';
 import {CirclePlus, CreditCard} from 'lucide-react'; // Assume you have these icons
 import {ScrollArea} from '../ui/scroll-area';
+import {useMutation, useQuery} from 'react-query';
+import {CreateTransaction, GetUser} from '@/data/api/user';
+import {Icons} from '../ui/icons';
+import {useToast} from '../ui/use-toast';
 
 const paymentMethods = [
   {label: 'Карта', value: 'card', icon: <CreditCard />}
@@ -35,6 +39,9 @@ const donateSchema = z.object({
 type DonateFormValues = z.infer<typeof donateSchema>;
 
 export const DonateModal = () => {
+  const {toast} = useToast();
+  const {mutate, isLoading} = useMutation(CreateTransaction);
+  const {refetch} = useQuery('user', GetUser);
   const {
     handleSubmit,
     control,
@@ -43,9 +50,18 @@ export const DonateModal = () => {
     resolver: zodResolver(donateSchema)
   });
 
-  const onSubmit = (data: DonateFormValues) => {
-    console.log(data);
-    // Добавьте логику отправки данных здесь
+  const onSubmit = ({amount, fullName, paymentMethod, phoneNumber}: DonateFormValues) => {
+    refetch();
+
+    mutate(
+      {amount, fullName, paymentMethod, phoneNumber},
+      {
+        onSuccess: (data) => {
+          if (data.message) toast({title: 'Уведомление о пополнении', description: data.message});
+          refetch();
+        }
+      }
+    );
   };
 
   return (
@@ -93,7 +109,11 @@ export const DonateModal = () => {
             {/* Поле ФИО */}
             <div>
               <Label htmlFor='fullName'>ФИО</Label>
-              <Controller name='fullName' control={control} render={({field}) => <Input id='fullName' {...field} />} />
+              <Controller
+                name='fullName'
+                control={control}
+                render={({field}) => <Input disabled={isLoading} id='fullName' {...field} />}
+              />
               {errors.fullName && <p className='text-red-500 text-sm'>{errors.fullName.message}</p>}
             </div>
 
@@ -103,7 +123,7 @@ export const DonateModal = () => {
               <Controller
                 name='phoneNumber'
                 control={control}
-                render={({field}) => <Input id='phoneNumber' {...field} />}
+                render={({field}) => <Input disabled={isLoading} id='phoneNumber' {...field} />}
               />
               {errors.phoneNumber && <p className='text-red-500 text-sm'>{errors.phoneNumber.message}</p>}
             </div>
@@ -111,12 +131,19 @@ export const DonateModal = () => {
             {/* Поле Номер телефона */}
             <div>
               <Label htmlFor='amount'>Сумма пополнения</Label>
-              <Controller name='amount' control={control} render={({field}) => <Input id='amount' {...field} />} />
+              <Controller
+                name='amount'
+                control={control}
+                render={({field}) => <Input disabled={isLoading} id='amount' {...field} />}
+              />
               {errors.amount && <p className='text-red-500 text-sm'>{errors.amount.message}</p>}
             </div>
 
             <DialogFooter className='mt-10'>
-              <Button type='submit'>Отправить</Button>
+              <Button disabled={isLoading} type='submit'>
+                {isLoading && <Icons.spinner className='mr-2 h-4 w-4 animate-spin' />}
+                Отправить
+              </Button>
             </DialogFooter>
           </form>
         </ScrollArea>

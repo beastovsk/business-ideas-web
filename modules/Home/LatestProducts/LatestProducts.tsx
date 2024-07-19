@@ -1,16 +1,19 @@
+'use client';
+
 import Link from 'next/link';
 import {ArrowUpRight} from 'lucide-react';
 import {Badge} from '@/components/ui/badge';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui/table';
-
-const productsList = [
-  {id: 0, label: 'SaSS платформа', description: 'Анализ продуктов', date: '14.07.2024', amount: 20},
-  {id: 1, label: 'SaSS платформа', description: 'Анализ продуктов', date: '14.07.2024', amount: 20}
-];
+import {useQuery} from 'react-query';
+import {getAllProducts} from '@/data/api/products';
+import {Skeleton} from '@/components/ui/skeleton';
+import {formatProductPrice} from '@/src/helpers/hooks';
 
 export const LatestProducts = () => {
+  const {data, isLoading, isSuccess} = useQuery('latestProducts', () => getAllProducts({isLatest: true}));
+
   return (
     <Card className='xl:col-span-2' x-chunk='dashboard-01-chunk-4'>
       <CardHeader className='flex flex-col md:flex-row items-end md:items-center'>
@@ -34,20 +37,40 @@ export const LatestProducts = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {productsList.map(({id, amount, date, description, label}) => (
-              <TableRow className='cursor-pointer'>
-                <TableCell className='truncate'>
-                  <Link href={`/home/products/${id}`} key={id}>
-                    <div className='font-medium truncate'>{label}</div>
-                    <div className='hidden text-sm text-muted-foreground md:inline truncate'>{description}</div>{' '}
-                  </Link>
-                </TableCell>
-                <TableCell className='hidden md:table-cell truncate'>{date}</TableCell>
-                <TableCell className='text-right truncate'>{amount} RUB</TableCell>
-              </TableRow>
-            ))}
+            {isLoading
+              ? Array.from(Array(5).keys()).map(() => (
+                  <TableRow>
+                    <TableCell>
+                      <Skeleton className='h-5 w-[250px]' />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className='h-5 w-[250px]' />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className='h-5 w-[250px]' />
+                    </TableCell>
+                  </TableRow>
+                ))
+              : null}
+            {isSuccess
+              ? data.products.map(({id, amount, date, description, title}) => (
+                  <TableRow className='cursor-pointer' key={id}>
+                    <TableCell className='truncate'>
+                      <Link href={`/home/products/${id}`}>
+                        <div className='font-medium truncate'>{title}</div>
+                        <div className='hidden text-sm text-muted-foreground md:inline truncate'>
+                          {description}
+                        </div>{' '}
+                      </Link>
+                    </TableCell>
+                    <TableCell className='hidden md:table-cell truncate'>{date}</TableCell>
+                    <TableCell className='text-right truncate'>{formatProductPrice(amount)}</TableCell>
+                  </TableRow>
+                ))
+              : null}
           </TableBody>
         </Table>
+        {isSuccess && !data.products.length ? <p className='text-center mt-10'>Список пуст</p> : null}
       </CardContent>
     </Card>
   );

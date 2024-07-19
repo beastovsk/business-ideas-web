@@ -6,14 +6,20 @@ import {Icons} from '@/components/ui/icons';
 import {Input} from '@/components/ui/input';
 import {Label} from '@/components/ui/label';
 import {Separator} from '@/components/ui/separator';
+import {useToast} from '@/components/ui/use-toast';
+import {ChangeEmail} from '@/data/api/user';
 import {changeEmailSchema} from '@/lib/validation/email';
 import {zodResolver} from '@hookform/resolvers/zod';
+import {setCookie} from 'cookies-next';
 import {useForm} from 'react-hook-form';
+import {useMutation} from 'react-query';
 import * as z from 'zod';
 
 type FormData = z.infer<typeof changeEmailSchema>;
 
 export const Profile = () => {
+  const {mutate, isLoading} = useMutation(ChangeEmail);
+  const {toast} = useToast();
   const {
     register,
     handleSubmit,
@@ -21,7 +27,21 @@ export const Profile = () => {
   } = useForm<FormData>({
     resolver: zodResolver(changeEmailSchema)
   });
-  async function onSubmit(data: FormData) {}
+
+  async function onSubmit({newEmail, password}: FormData) {
+    const currentEmail = localStorage.getItem('email');
+
+    mutate(
+      {currentEmail, newEmail, password},
+      {
+        onSuccess: (data) => {
+          if (data.message) toast({title: 'Уведомление о смене почты', description: data.message});
+          if (data.token) setCookie('token', data.token);
+          localStorage.setItem('email', newEmail);
+        }
+      }
+    );
+  }
 
   return (
     <div className='grid gap-6'>
@@ -38,16 +58,16 @@ export const Profile = () => {
                   Новая почта
                 </Label>
                 <Input
-                  id='email'
+                  id='newEmail'
                   placeholder='Новая почта'
-                  type='email'
+                  type='mail'
                   autoCapitalize='none'
                   autoComplete='email'
                   autoCorrect='off'
                   disabled={false}
-                  {...register('email')}
+                  {...register('newEmail')}
                 />
-                {errors?.email && <p className='px-1 text-xs text-red-600'>{errors.email.message}</p>}
+                {errors?.newEmail && <p className='px-1 text-xs text-red-600'>{errors.newEmail.message}</p>}
               </div>
               <div className='grid gap-1'>
                 <Label className='sr-only' htmlFor='password'>
@@ -60,15 +80,15 @@ export const Profile = () => {
                   autoCapitalize='none'
                   autoComplete='password'
                   autoCorrect='off'
-                  disabled={false}
+                  disabled={isLoading}
                   {...register('password')}
                 />
                 {errors?.password && <p className='px-1 text-xs text-red-600'>{errors.password.message}</p>}
               </div>
 
               <Separator className='my-3' />
-              <Button disabled={false} className='w-max'>
-                {false && <Icons.spinner className='mr-2 h-4 w-4 animate-spin' />}
+              <Button disabled={isLoading} className='w-max'>
+                {isLoading && <Icons.spinner className='mr-2 h-4 w-4 animate-spin' />}
                 Подтвердить
               </Button>
             </div>

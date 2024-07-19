@@ -20,26 +20,28 @@ import {Label} from '@/components/ui/label';
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/components/ui/select';
 
 import {priorities} from '../ProductsTable/data';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Input} from '../ui/input';
 import {Textarea} from '../ui/textarea';
+import {useQuery} from 'react-query';
+import {getProductById} from '@/data/api/products';
 
 export const Product = ({id}) => {
+  const {data, isLoading, isSuccess} = useQuery('product', () => getProductById(id));
   const router = useRouter();
-  console.log(id);
 
   const [productDetails, setProductDetails] = useState({
-    productName: 'Gamer Gear Pro Controller',
-    productDescription: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit.',
-    features: ['Feature 1', 'Feature 2', 'Feature 3'],
-    benefits: ['Benefit 1', 'Benefit 2', 'Benefit 3'],
-    targetAudience: 'Gamers',
-    marketAnalysis: 'Market analysis details here...',
-    competitiveAdvantage: 'Competitive advantage details here...',
-    estimatedBudget: 'Estimated budget details here...',
-    potentialChallenges: 'Potential challenges and solutions here...',
-    additionalRecommendations: 'Additional recommendations here...',
-    uniqueOffer: 'Unique product offer here...'
+    productName: '',
+    productDescription: '',
+    features: [],
+    benefits: [],
+    targetAudience: '',
+    marketAnalysis: '',
+    competitiveAdvantage: '',
+    estimatedBudget: '',
+    potentialChallenges: '',
+    additionalRecommendations: '',
+    uniqueOffer: ''
   });
 
   const handleInputChange = (e) => {
@@ -69,6 +71,12 @@ export const Product = ({id}) => {
       return {...prevDetails, [name]: newList};
     });
   };
+
+  useEffect(() => {
+    if (!isSuccess) return;
+
+    setProductDetails(data.product);
+  }, [isSuccess]);
 
   return (
     <main className='grid flex-1 items-start gap-4 sm:p-4 sm:px-6 md:gap-8'>
@@ -124,6 +132,7 @@ export const Product = ({id}) => {
                   <div className='grid gap-3'>
                     <Label htmlFor='productName'>Название</Label>
                     <Input
+                      disabled={isLoading}
                       id='productName'
                       name='productName'
                       value={productDetails.productName}
@@ -134,6 +143,7 @@ export const Product = ({id}) => {
                   <div className='grid gap-3'>
                     <Label htmlFor='productDescription'>Описание</Label>
                     <Textarea
+                      disabled={isLoading}
                       id='productDescription'
                       name='productDescription'
                       value={productDetails.productDescription}
@@ -156,16 +166,23 @@ export const Product = ({id}) => {
                       {productDetails.features.map((feature, index) => (
                         <li key={index} className='flex gap-2'>
                           <Input
+                            disabled={isLoading}
                             type='text'
                             value={feature}
                             onChange={(e) => handleListChange('features', index, e.target.value)}
                           />
-                          <Button variant='outline' onClick={() => handleRemoveItem('features', index)}>
+                          <Button
+                            disabled={isLoading}
+                            variant='outline'
+                            onClick={() => handleRemoveItem('features', index)}
+                          >
                             Удалить
                           </Button>
                         </li>
                       ))}
-                      <Button onClick={() => handleAddItem('features')}>Добавить характеристику</Button>
+                      <Button onClick={() => handleAddItem('features')} disabled={isLoading}>
+                        Добавить характеристику
+                      </Button>
                     </ul>
                   </div>
                 </div>
@@ -176,16 +193,23 @@ export const Product = ({id}) => {
                       {productDetails.benefits.map((benefit, index) => (
                         <li key={index} className='flex gap-2'>
                           <Input
+                            disabled={isLoading}
                             type='text'
                             value={benefit}
                             onChange={(e) => handleListChange('benefits', index, e.target.value)}
                           />
-                          <Button variant='outline' onClick={() => handleRemoveItem('benefits', index)}>
+                          <Button
+                            disabled={isLoading}
+                            variant='outline'
+                            onClick={() => handleRemoveItem('benefits', index)}
+                          >
                             Удалить
                           </Button>
                         </li>
                       ))}
-                      <Button onClick={() => handleAddItem('benefits')}>Добавить преимущество</Button>
+                      <Button disabled={isLoading} onClick={() => handleAddItem('benefits')}>
+                        Добавить преимущество
+                      </Button>
                     </ul>
                   </div>
                 </div>
@@ -201,6 +225,7 @@ export const Product = ({id}) => {
                   <div className='grid gap-3'>
                     <Label htmlFor='targetAudience'>Целевая аудитория</Label>
                     <Input
+                      disabled={isLoading}
                       id='targetAudience'
                       name='targetAudience'
                       value={productDetails.targetAudience}
@@ -211,6 +236,7 @@ export const Product = ({id}) => {
                   <div className='grid gap-3'>
                     <Label htmlFor='marketAnalysis'>Анализ рынка</Label>
                     <Textarea
+                      disabled={isLoading}
                       id='marketAnalysis'
                       name='marketAnalysis'
                       value={productDetails.marketAnalysis}
@@ -220,6 +246,7 @@ export const Product = ({id}) => {
                   <div className='grid gap-3'>
                     <Label htmlFor='marketAnalysis'>Конкурентные преимущества</Label>
                     <Textarea
+                      disabled={isLoading}
                       id='marketAnalysis'
                       name='marketAnalysis'
                       value={productDetails.competitiveAdvantage}
@@ -239,6 +266,7 @@ export const Product = ({id}) => {
                   <div className='grid gap-3'>
                     <Label htmlFor='estimatedBudget'>Предполагаемый бюджет и сроки</Label>
                     <Textarea
+                      disabled={isLoading}
                       id='estimatedBudget'
                       name='estimatedBudget'
                       value={productDetails.estimatedBudget}
@@ -249,6 +277,7 @@ export const Product = ({id}) => {
                   <div className='grid gap-3'>
                     <Label htmlFor='potentialChallenges'>Возможные проблемы и пути их решения</Label>
                     <Textarea
+                      disabled={isLoading}
                       id='potentialChallenges'
                       name='potentialChallenges'
                       value={productDetails.potentialChallenges}
@@ -258,6 +287,7 @@ export const Product = ({id}) => {
                   <div className='grid gap-3'>
                     <Label htmlFor='additionalRecommendations'>Дополнительные рекомендации</Label>
                     <Textarea
+                      disabled={isLoading}
                       id='additionalRecommendations'
                       name='additionalRecommendations'
                       value={productDetails.additionalRecommendations}
@@ -278,6 +308,7 @@ export const Product = ({id}) => {
                   <div className='grid gap-3'>
                     <Label htmlFor='uniqueOffer'>Уникальное торговое предложение</Label>
                     <Textarea
+                      disabled={isLoading}
                       id='uniqueOffer'
                       name='uniqueOffer'
                       value={productDetails.uniqueOffer}
@@ -297,7 +328,7 @@ export const Product = ({id}) => {
                 <div className='grid gap-6'>
                   <div className='grid gap-3'>
                     <Label htmlFor='status'>Обновить приоритет</Label>
-                    <Select>
+                    <Select disabled={isLoading}>
                       <SelectTrigger id='status' aria-label='Select status'>
                         <SelectValue placeholder='Выберите приоритет' />
                       </SelectTrigger>
@@ -320,7 +351,7 @@ export const Product = ({id}) => {
               </CardHeader>
               <CardContent>
                 <div></div>
-                <Button size='sm' variant='secondary'>
+                <Button disabled={isLoading} size='sm' variant='secondary'>
                   Добавить в избранное
                 </Button>
               </CardContent>

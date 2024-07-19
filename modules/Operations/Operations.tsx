@@ -1,42 +1,18 @@
+'use client';
+
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui/table';
 import {Card, CardContent, CardFooter, CardHeader} from '@/components/ui/card';
 
 import {Badge} from '@/components/ui/badge';
 import {formatProductPrice} from '@/src/helpers/hooks';
 import {Avatar} from '@/components/ui/avatar';
-
-const operationsList = [
-  {
-    id: 1,
-    type: 'Deposit',
-    amount: 100,
-    date: '24.07.15',
-    status: 'Completed'
-  },
-  {
-    id: 2,
-    type: 'Deposit',
-    amount: 100,
-    date: '24.07.15',
-    status: 'Completed'
-  },
-  {
-    id: 3,
-    type: 'Deposit',
-    amount: 100,
-    date: '24.07.15',
-    status: 'Completed'
-  },
-  {
-    id: 4,
-    type: 'Deposit',
-    amount: 100,
-    date: '24.07.15',
-    status: 'Completed'
-  }
-];
+import {useQuery} from 'react-query';
+import {getAllOperations} from '@/data/api/operations';
+import {Skeleton} from '@/components/ui/skeleton';
 
 export const Operations = () => {
+  const {data, isLoading, isSuccess} = useQuery('operations', () => getAllOperations({isLatest: false}));
+
   return (
     <div>
       {' '}
@@ -66,23 +42,53 @@ export const Operations = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {operationsList.map(({amount, date, id, status, type}) => (
-                <TableRow key={id}>
-                  <TableCell>{id}</TableCell>
-                  <TableCell className='font-medium'>{type}</TableCell>
-                  <TableCell className='hidden md:table-cell'>
-                    <Badge variant='outline'>{status}</Badge>
+              {isSuccess
+                ? data.operations.map(({amount, date, id, status, type}) => (
+                    <TableRow key={id}>
+                      <TableCell>{id}</TableCell>
+                      <TableCell className='font-medium'>{type}</TableCell>
+                      <TableCell className='hidden md:table-cell'>
+                        <Badge variant='outline'>{status}</Badge>
+                      </TableCell>
+                      <TableCell>{formatProductPrice(amount)}</TableCell>
+                      <TableCell className='hidden md:table-cell'>{date}</TableCell>
+                    </TableRow>
+                  ))
+                : null}
+              {isSuccess && !data.operations.length ? (
+                <TableRow>
+                  <TableCell colSpan={5} className='h-24 text-center'>
+                    Нет результатов.
                   </TableCell>
-                  <TableCell>{formatProductPrice(amount)}</TableCell>
-                  <TableCell className='hidden md:table-cell'>{date}</TableCell>
                 </TableRow>
-              ))}
+              ) : null}
+              {isLoading
+                ? Array.from(Array(5).keys()).map(() => (
+                    <TableRow>
+                      <TableCell>
+                        <Skeleton className='h-5 w-[250px]' />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className='h-5 w-[250px]' />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className='h-5 w-[250px]' />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className='h-5 w-[250px]' />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className='h-5 w-[250px]' />
+                      </TableCell>
+                    </TableRow>
+                  ))
+                : null}
             </TableBody>
           </Table>
         </CardContent>
         <CardFooter>
           <div className='text-xs text-muted-foreground'>
-            <strong>{operationsList.length}</strong> операций
+            <strong>{isSuccess ? data.operations.length : 0}</strong> операций
           </div>
         </CardFooter>
       </Card>
