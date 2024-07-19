@@ -163,7 +163,7 @@ export const Product = ({id}) => {
                   <Label htmlFor='description'>Характеристики</Label>
                   <div>
                     <ul className='flex flex-col gap-2'>
-                      {productDetails?.features.map((feature, index) => (
+                      {productDetails?.features?.map((feature, index) => (
                         <li key={index} className='flex gap-2'>
                           <Input
                             disabled={isLoading}
@@ -190,7 +190,7 @@ export const Product = ({id}) => {
                   <Label htmlFor='description'>Преимущества</Label>
                   <div>
                     <ul className='flex flex-col gap-2'>
-                      {productDetails?.benefits.map((benefit, index) => (
+                      {productDetails?.benefits?.map((benefit, index) => (
                         <li key={index} className='flex gap-2'>
                           <Input
                             disabled={isLoading}
