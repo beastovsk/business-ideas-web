@@ -74,7 +74,7 @@ export const GenerateModal = () => {
         onSuccess: (data) => {
           if (data.message) toast({title: 'Уведомление о генерации продукта', description: data.message});
           if (data.message === 'Недостаточно средств для генерации') return;
-          push(`/home/products?id=${data.id}`);
+          push(`/home/products?id=${data.product.id}`);
         }
       }
     );

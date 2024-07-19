@@ -75,8 +75,27 @@ export const Product = ({id}) => {
   useEffect(() => {
     if (!isSuccess) return;
 
-    setProductDetails(data.product);
+    const productDetailsNew = JSON.parse(JSON.parse(data.product.info).res);
+
+    setProductDetails(productDetailsNew);
   }, [isSuccess]);
+
+  useEffect(() => {
+    () =>
+      setProductDetails({
+        productName: '',
+        productDescription: '',
+        features: [],
+        benefits: [],
+        targetAudience: '',
+        marketAnalysis: '',
+        competitiveAdvantage: '',
+        estimatedBudget: '',
+        potentialChallenges: '',
+        additionalRecommendations: '',
+        uniqueOffer: ''
+      });
+  }, []);
 
   return (
     <main className='grid flex-1 items-start gap-4 sm:p-4 sm:px-6 md:gap-8'>
