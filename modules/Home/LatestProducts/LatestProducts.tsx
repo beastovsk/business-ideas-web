@@ -53,7 +53,7 @@ export const LatestProducts = () => {
                 ))
               : null}
             {isSuccess
-              ? data.products.map(({id, amount, date, description, title}) => (
+              ? data?.products?.map(({id, amount, date, description, title}) => (
                   <TableRow className='cursor-pointer' key={id}>
                     <TableCell className='truncate'>
                       <Link href={`/home/products/${id}`}>
@@ -70,7 +70,7 @@ export const LatestProducts = () => {
               : null}
           </TableBody>
         </Table>
-        {isSuccess && !data.products.length ? <p className='text-center mt-10'>Список пуст</p> : null}
+        {isSuccess && !data?.products?.length ? <p className='text-center mt-10'>Список пуст</p> : null}
       </CardContent>
     </Card>
   );

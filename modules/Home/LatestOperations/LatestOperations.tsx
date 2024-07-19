@@ -7,12 +7,6 @@ import {getAllOperations} from '@/data/api/operations';
 import {formatProductPrice} from '@/src/helpers/hooks';
 import {useQuery} from 'react-query';
 
-const operationsList = [
-  {title: 'Пополнение', date: '12.07.2024', amount: 200, type: 'receive'},
-  {title: 'Возврат', date: '13.07.2024', amount: 57, type: 'cancel'},
-  {title: 'Покупка', date: '13.07.2024', amount: 100, type: 'confirm'}
-];
-
 export const LatestOperations = () => {
   const {data, isLoading, isSuccess} = useQuery('latestOperations', () => getAllOperations({isLatest: true}));
 
@@ -30,7 +24,7 @@ export const LatestOperations = () => {
             ))
           : null}
         {isSuccess
-          ? data.operations.map(({id, amount, date, status, type}) => (
+          ? data?.operations?.map(({id, amount, date, status, type}) => (
               <div className='flex items-center gap-4' key={id}>
                 <Avatar className='hidden h-9 w-9 sm:flex'>
                   <AvatarImage src='/avatars/01.png' alt='Avatar' />
@@ -47,7 +41,7 @@ export const LatestOperations = () => {
               </div>
             ))
           : null}
-        {isSuccess && !data.operations.length ? <p className='text-center mt-10'>Список пуст</p> : null}
+        {isSuccess && !data?.operations?.length ? <p className='text-center mt-10'>Список пуст</p> : null}
       </CardContent>
     </Card>
   );

@@ -5,13 +5,14 @@ import {Product} from '@/components/Product/Product';
 import {columns} from '@/components/ProductsTable/columns';
 import {DataTable} from '@/components/ProductsTable/data-table';
 import {getAllProducts} from '@/data/api/products';
+import {getCookie} from 'cookies-next';
 import {useSearchParams} from 'next/navigation';
 import {useQuery} from 'react-query';
 
 export const Products = () => {
   const searchParams = useSearchParams();
   const {data, isLoading, isSuccess} = useQuery('products', () => getAllProducts({isLatest: false}));
-
+  const token = getCookie('token');
   const id = searchParams.get('id');
 
   if (id) {

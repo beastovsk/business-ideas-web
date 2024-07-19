@@ -27,7 +27,7 @@ import {useQuery} from 'react-query';
 import {getProductById} from '@/data/api/products';
 
 export const Product = ({id}) => {
-  const {data, isLoading, isSuccess} = useQuery('product', () => getProductById(id));
+  const {data, isLoading, isSuccess} = useQuery('product', () => getProductById({id}));
   const router = useRouter();
 
   const [productDetails, setProductDetails] = useState({
@@ -88,7 +88,7 @@ export const Product = ({id}) => {
           </Button>
 
           <h1 className='flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0'>
-            {productDetails.productName}
+            {productDetails?.productName}
           </h1>
 
           <Badge variant='outline' className='ml-auto sm:ml-0'>
@@ -135,7 +135,7 @@ export const Product = ({id}) => {
                       disabled={isLoading}
                       id='productName'
                       name='productName'
-                      value={productDetails.productName}
+                      value={productDetails?.productName}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -146,7 +146,7 @@ export const Product = ({id}) => {
                       disabled={isLoading}
                       id='productDescription'
                       name='productDescription'
-                      value={productDetails.productDescription}
+                      value={productDetails?.productDescription}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -163,7 +163,7 @@ export const Product = ({id}) => {
                   <Label htmlFor='description'>Характеристики</Label>
                   <div>
                     <ul className='flex flex-col gap-2'>
-                      {productDetails.features.map((feature, index) => (
+                      {productDetails?.features.map((feature, index) => (
                         <li key={index} className='flex gap-2'>
                           <Input
                             disabled={isLoading}
@@ -190,7 +190,7 @@ export const Product = ({id}) => {
                   <Label htmlFor='description'>Преимущества</Label>
                   <div>
                     <ul className='flex flex-col gap-2'>
-                      {productDetails.benefits.map((benefit, index) => (
+                      {productDetails?.benefits.map((benefit, index) => (
                         <li key={index} className='flex gap-2'>
                           <Input
                             disabled={isLoading}
@@ -228,7 +228,7 @@ export const Product = ({id}) => {
                       disabled={isLoading}
                       id='targetAudience'
                       name='targetAudience'
-                      value={productDetails.targetAudience}
+                      value={productDetails?.targetAudience}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -239,7 +239,7 @@ export const Product = ({id}) => {
                       disabled={isLoading}
                       id='marketAnalysis'
                       name='marketAnalysis'
-                      value={productDetails.marketAnalysis}
+                      value={productDetails?.marketAnalysis}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -249,7 +249,7 @@ export const Product = ({id}) => {
                       disabled={isLoading}
                       id='marketAnalysis'
                       name='marketAnalysis'
-                      value={productDetails.competitiveAdvantage}
+                      value={productDetails?.competitiveAdvantage}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -269,7 +269,7 @@ export const Product = ({id}) => {
                       disabled={isLoading}
                       id='estimatedBudget'
                       name='estimatedBudget'
-                      value={productDetails.estimatedBudget}
+                      value={productDetails?.estimatedBudget}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -280,7 +280,7 @@ export const Product = ({id}) => {
                       disabled={isLoading}
                       id='potentialChallenges'
                       name='potentialChallenges'
-                      value={productDetails.potentialChallenges}
+                      value={productDetails?.potentialChallenges}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -290,7 +290,7 @@ export const Product = ({id}) => {
                       disabled={isLoading}
                       id='additionalRecommendations'
                       name='additionalRecommendations'
-                      value={productDetails.additionalRecommendations}
+                      value={productDetails?.additionalRecommendations}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -311,7 +311,7 @@ export const Product = ({id}) => {
                       disabled={isLoading}
                       id='uniqueOffer'
                       name='uniqueOffer'
-                      value={productDetails.uniqueOffer}
+                      value={productDetails?.uniqueOffer}
                       onChange={handleInputChange}
                     />
                   </div>

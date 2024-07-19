@@ -15,7 +15,6 @@ export const Operations = () => {
 
   return (
     <div>
-      {' '}
       <div className='flex items-center justify-between space-y-2 mb-10'>
         <div>
           <h2 className='text-2xl font-bold tracking-tight'>Список операций</h2>
@@ -43,7 +42,7 @@ export const Operations = () => {
             </TableHeader>
             <TableBody>
               {isSuccess
-                ? data.operations.map(({amount, date, id, status, type}) => (
+                ? data?.operations?.map(({amount, date, id, status, type}) => (
                     <TableRow key={id}>
                       <TableCell>{id}</TableCell>
                       <TableCell className='font-medium'>{type}</TableCell>
@@ -55,7 +54,7 @@ export const Operations = () => {
                     </TableRow>
                   ))
                 : null}
-              {isSuccess && !data.operations.length ? (
+              {isSuccess && !data.operations?.length ? (
                 <TableRow>
                   <TableCell colSpan={5} className='h-24 text-center'>
                     Нет результатов.
@@ -88,7 +87,7 @@ export const Operations = () => {
         </CardContent>
         <CardFooter>
           <div className='text-xs text-muted-foreground'>
-            <strong>{isSuccess ? data.operations.length : 0}</strong> операций
+            <strong>{isSuccess ? data.operations?.length : 0}</strong> операций
           </div>
         </CardFooter>
       </Card>
