@@ -10,6 +10,7 @@ import {useQuery} from 'react-query';
 import {getAllProducts} from '@/data/api/products';
 import {Skeleton} from '@/components/ui/skeleton';
 import {formatProductPrice} from '@/src/helpers/hooks';
+import moment from 'moment';
 
 export const LatestProducts = () => {
   const {data, isLoading, isSuccess} = useQuery('latestProducts', () => getAllProducts({isLatest: true}));
@@ -17,7 +18,7 @@ export const LatestProducts = () => {
   return (
     <Card className='xl:col-span-2' x-chunk='dashboard-01-chunk-4'>
       <CardHeader className='flex flex-col md:flex-row items-end md:items-center'>
-        <div className='grid gap-2'>
+        <div className='grid gap-2 w-full'>
           <CardTitle>Последние продукты</CardTitle>
           <CardDescription>Список последних сгенерированных продуктов</CardDescription>
         </div>
@@ -39,7 +40,7 @@ export const LatestProducts = () => {
           <TableBody>
             {isLoading
               ? Array.from(Array(5).keys()).map(() => (
-                  <TableRow>
+                  <TableRow key={`skeleton-${Math.random()}`}>
                     <TableCell>
                       <Skeleton className='h-5 w-[250px]' />
                     </TableCell>
@@ -56,14 +57,16 @@ export const LatestProducts = () => {
               ? data?.products?.map(({id, amount, date, description, title}) => (
                   <TableRow className='cursor-pointer' key={id}>
                     <TableCell className='truncate'>
-                      <Link href={`/home/products/${id}`}>
-                        <div className='font-medium truncate'>{title}</div>
-                        <div className='hidden text-sm text-muted-foreground md:inline truncate'>
+                      <Link href={`/home/products?id=${id}`}>
+                        <div className='font-medium truncate max-w-[80px] md:max-w-[200px] sm:max-w-[150px] xs:max-w-[100px] lg:max-w-[300px]'>
+                          {title}
+                        </div>
+                        {/* <div className='block text-sm text-muted-foreground truncate max-w-[250px] md:max-w-[200px] sm:max-w-[150px] xs:max-w-[100px]'>
                           {description}
-                        </div>{' '}
+                        </div> */}
                       </Link>
                     </TableCell>
-                    <TableCell className='hidden md:table-cell truncate'>{date}</TableCell>
+                    <TableCell className='hidden md:table-cell truncate'>{moment(date).format('DD-MM-YYYY')}</TableCell>
                     <TableCell className='text-right truncate'>{formatProductPrice(amount)}</TableCell>
                   </TableRow>
                 ))

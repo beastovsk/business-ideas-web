@@ -2,7 +2,6 @@
 
 import {ChevronLeft} from 'lucide-react';
 import {Badge} from '@/components/ui/badge';
-
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {DotsHorizontalIcon} from '@radix-ui/react-icons';
@@ -25,6 +24,7 @@ import {Input} from '../ui/input';
 import {Textarea} from '../ui/textarea';
 import {useQuery} from 'react-query';
 import {getProductById} from '@/data/api/products';
+import Loading from '@/app/loading';
 
 export const Product = ({id}) => {
   const {data, isLoading, isSuccess} = useQuery('product', () => getProductById({id}));
@@ -51,6 +51,7 @@ export const Product = ({id}) => {
       [name]: value
     }));
   };
+
   const handleListChange = (name, index, value) => {
     setProductDetails((prevDetails) => {
       const newList = [...prevDetails[name]];
@@ -58,6 +59,7 @@ export const Product = ({id}) => {
       return {...prevDetails, [name]: newList};
     });
   };
+
   const handleAddItem = (name) => {
     setProductDetails((prevDetails) => {
       const newList = [...prevDetails[name], ''];
@@ -80,8 +82,16 @@ export const Product = ({id}) => {
     setProductDetails(productDetailsNew);
   }, [isSuccess, data]);
 
+  if (isLoading) {
+    return (
+      <div className='h-screen flex justify-center items-center'>
+        <Loading />
+      </div>
+    );
+  }
+
   return (
-    <main className='grid flex-1 items-start gap-4 sm:p-4 sm:px-6 md:gap-8'>
+    <main className='grid flex-1 items-start gap-4 p-0 sm:p-6 md:gap-8'>
       <div className='mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4'>
         <div className='flex items-center gap-4'>
           <Button variant='outline' size='icon' className='h-7 w-7' onClick={() => router.back()}>
@@ -89,7 +99,7 @@ export const Product = ({id}) => {
             <span className='sr-only'>Back</span>
           </Button>
 
-          <h1 className='flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0'>
+          <h1 className='flex-1 truncate max-w-[150px] md:max-w-max shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight'>
             {productDetails?.productName}
           </h1>
 
@@ -246,11 +256,11 @@ export const Product = ({id}) => {
                     />
                   </div>
                   <div className='grid gap-3'>
-                    <Label htmlFor='marketAnalysis'>Конкурентные преимущества</Label>
+                    <Label htmlFor='competitiveAdvantage'>Конкурентные преимущества</Label>
                     <Textarea
                       disabled={isLoading}
-                      id='marketAnalysis'
-                      name='marketAnalysis'
+                      id='competitiveAdvantage'
+                      name='competitiveAdvantage'
                       value={productDetails?.competitiveAdvantage}
                       onChange={handleInputChange}
                     />
