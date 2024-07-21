@@ -9,6 +9,7 @@ import {Avatar} from '@/components/ui/avatar';
 import {useQuery} from 'react-query';
 import {getAllOperations} from '@/data/api/operations';
 import {Skeleton} from '@/components/ui/skeleton';
+import moment from 'moment';
 
 export const Operations = () => {
   const {data, isLoading, isSuccess} = useQuery('operations', () => getAllOperations({isLatest: false}));
@@ -50,7 +51,7 @@ export const Operations = () => {
                         <Badge variant='outline'>{status}</Badge>
                       </TableCell>
                       <TableCell>{formatProductPrice(amount)}</TableCell>
-                      <TableCell className='hidden md:table-cell'>{date}</TableCell>
+                      <TableCell className='hidden md:table-cell'>{moment(date).format('DD-MM-YYYY')}</TableCell>
                     </TableRow>
                   ))
                 : null}

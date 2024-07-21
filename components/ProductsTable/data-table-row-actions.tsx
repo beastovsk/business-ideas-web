@@ -12,12 +12,42 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import Link from 'next/link';
+import {useMutation, useQuery} from 'react-query';
+import {deleteProductById, getAllProducts} from '../../data/api/products';
+import {useToast} from '../ui/use-toast';
+import {useEffect} from 'react';
+import {useRouter} from 'next/navigation';
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
 }
 
 export function DataTableRowActions<TData>({row}: DataTableRowActionsProps<TData>) {
+  const id = row.getValue('id');
+  const {mutate, isSuccess} = useMutation(deleteProductById);
+  const {refetch} = useQuery('products', () => getAllProducts({isLatest: false}));
+  const {toast} = useToast();
+  const {push} = useRouter();
+
+  useEffect(() => {
+    if (!isSuccess) return;
+
+    refetch();
+  }, [isSuccess]);
+
+  const handleDeleteProduct = () => {
+    mutate(
+      {id},
+      {
+        onSuccess: (data) => {
+          toast({title: 'Уведомление об удалении', description: data.message});
+          push('/home/products');
+        }
+      }
+    );
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -27,13 +57,19 @@ export function DataTableRowActions<TData>({row}: DataTableRowActionsProps<TData
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='w-[160px]'>
-        <DropdownMenuItem>Перейти</DropdownMenuItem>
-        <DropdownMenuItem>Избранное</DropdownMenuItem>
+        <Link href={`/home/products?id=${id}`} className='cursor-pointer'>
+          <DropdownMenuItem>Перейти</DropdownMenuItem>
+        </Link>
+        <DropdownMenuItem onClick={() => toast({title: 'Уведомление продукта', description: 'В разработке'})}>
+          Избранное
+        </DropdownMenuItem>
+
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Начать проект</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => toast({title: 'Уведомление проекта', description: 'В разработке'})}>
+          Начать проект
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Пожаловаться</DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={handleDeleteProduct}>
           Удалить
           <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
         </DropdownMenuItem>

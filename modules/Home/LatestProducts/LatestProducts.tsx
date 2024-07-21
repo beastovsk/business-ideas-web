@@ -61,9 +61,6 @@ export const LatestProducts = () => {
                         <div className='font-medium truncate max-w-[80px] md:max-w-[200px] sm:max-w-[150px] xs:max-w-[100px] lg:max-w-[300px]'>
                           {title}
                         </div>
-                        {/* <div className='block text-sm text-muted-foreground truncate max-w-[250px] md:max-w-[200px] sm:max-w-[150px] xs:max-w-[100px]'>
-                          {description}
-                        </div> */}
                       </Link>
                     </TableCell>
                     <TableCell className='hidden md:table-cell truncate'>{moment(date).format('DD-MM-YYYY')}</TableCell>

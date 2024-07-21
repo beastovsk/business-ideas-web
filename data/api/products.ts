@@ -50,7 +50,7 @@ export const deleteProductById = async ({id}) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${getCookie('token')}`
     },
-    method: 'POST'
+    method: 'DELETE'
   }).then((data) => {
     if (!data.ok) return;
     return data.json();
