@@ -78,7 +78,6 @@ export function DataTableFacetedFilter<TData, TValue>({
                   <CommandItem
                     key={option.value}
                     onClick={() => {
-                      console.log(true);
                       if (isSelected) {
                         selectedValues.delete(option.value);
                       } else {

@@ -4,17 +4,8 @@ import {ChevronLeft} from 'lucide-react';
 import {Badge} from '@/components/ui/badge';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
-import {DotsHorizontalIcon} from '@radix-ui/react-icons';
-import {useRouter} from 'next/navigation'; // Usage: App router
+import {useRouter} from 'next/navigation';
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
 import {Label} from '@/components/ui/label';
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/components/ui/select';
 
@@ -22,14 +13,19 @@ import {priorities} from '../ProductsTable/data';
 import {useEffect, useState} from 'react';
 import {Input} from '../ui/input';
 import {Textarea} from '../ui/textarea';
-import {useQuery} from 'react-query';
-import {getProductById} from '@/data/api/products';
+import {useMutation, useQuery} from 'react-query';
+import {getProductById, updateProduct} from '@/data/api/products';
 import Loading from '@/app/loading';
+import {ProductMenu} from '../ProductMenu/ProductMenu';
+import {useToast} from '../ui/use-toast';
+import {Icons} from '../ui/icons';
 
 export const Product = ({id}) => {
-  const {data, isLoading, isSuccess} = useQuery('product', () => getProductById({id}));
+  const {data, isLoading, isSuccess, refetch} = useQuery('product', () => getProductById({id}));
+  const {mutate, isLoading: isProductUpdating} = useMutation(updateProduct);
   const router = useRouter();
-
+  const {toast} = useToast();
+  const [priority, setPriority] = useState('');
   const [productDetails, setProductDetails] = useState({
     productName: '',
     productDescription: '',
@@ -43,6 +39,7 @@ export const Product = ({id}) => {
     additionalRecommendations: '',
     uniqueOffer: ''
   });
+  const [copyProduct, setCopyProduct] = useState(null);
 
   const handleInputChange = (e) => {
     const {name, value} = e.target;
@@ -78,8 +75,9 @@ export const Product = ({id}) => {
     if (!isSuccess) return;
 
     const productDetailsNew = JSON.parse(JSON.parse(data.product.info).res);
-
+    setCopyProduct(data.product.info.res);
     setProductDetails(productDetailsNew);
+    setPriority(data.product.priority);
   }, [isSuccess, data]);
 
   if (isLoading) {
@@ -89,6 +87,41 @@ export const Product = ({id}) => {
       </div>
     );
   }
+
+  const handleUpdateProduct = () => {
+    const updatedProduct = {
+      id: data.product.id,
+      title: productDetails.productName,
+      description: productDetails.productDescription,
+      date: data.product.date,
+      amount: data.product.amount,
+      info: JSON.stringify({
+        req: JSON.parse(data.product.info).req,
+        res: JSON.stringify(productDetails)
+      }),
+      favourite: data.product.favourite,
+      status: data.product.status,
+      label: data.product.label,
+      priority,
+      created_at: data.product.created_at,
+      userid: data.product.userid
+    };
+
+    mutate(updatedProduct, {
+      onSuccess: (data) => {
+        if (data.message) toast({title: 'Уведомления продукта', description: data.message});
+        refetch();
+      }
+    });
+  };
+
+  const resetProductUpdates = () => {
+    const productDetailsNew = JSON.parse(JSON.parse(data.product.info).res);
+    setCopyProduct(data.product.info.res);
+    setProductDetails(productDetailsNew);
+    setPriority(data.product.priority);
+    toast({title: 'Уведомления продукта', description: 'Изменения успешно отменены'});
+  };
 
   return (
     <main className='grid flex-1 items-start gap-4 p-0 sm:p-6 md:gap-8'>
@@ -107,30 +140,15 @@ export const Product = ({id}) => {
             Создано
           </Badge>
           <div className='hidden items-center gap-2 md:ml-auto md:flex'>
-            <Button variant='outline' size='sm'>
+            <Button variant='outline' size='sm' onClick={resetProductUpdates}>
               Вернуть назад
             </Button>
-            <Button size='sm'>Сохранить</Button>
+            <Button size='sm' onClick={handleUpdateProduct}>
+              {isProductUpdating && <Icons.spinner className='mr-2 h-4 w-4 animate-spin' />}
+              Сохранить
+            </Button>
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant='ghost' className='flex h-8 w-8 p-0 data-[state=open]:bg-muted'>
-                <DotsHorizontalIcon className='h-4 w-4' />
-                <span className='sr-only'>Открыть меню</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align='end' className='w-[160px]'>
-              <DropdownMenuItem>Избранное</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Начать проект</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Пожаловаться</DropdownMenuItem>
-              <DropdownMenuItem>
-                Удалить
-                <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <ProductMenu id={id} />
         </div>
         <div className='grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8'>
           <div className='grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8'>
@@ -144,7 +162,7 @@ export const Product = ({id}) => {
                   <div className='grid gap-3'>
                     <Label htmlFor='productName'>Название</Label>
                     <Input
-                      disabled={isLoading}
+                      disabled={isLoading || isProductUpdating}
                       id='productName'
                       name='productName'
                       value={productDetails?.productName}
@@ -155,7 +173,7 @@ export const Product = ({id}) => {
                   <div className='grid gap-3'>
                     <Label htmlFor='productDescription'>Описание</Label>
                     <Textarea
-                      disabled={isLoading}
+                      disabled={isLoading || isProductUpdating}
                       id='productDescription'
                       name='productDescription'
                       value={productDetails?.productDescription}
@@ -178,13 +196,13 @@ export const Product = ({id}) => {
                       {productDetails?.features?.map((feature, index) => (
                         <li key={index} className='flex gap-2'>
                           <Input
-                            disabled={isLoading}
+                            disabled={isLoading || isProductUpdating}
                             type='text'
                             value={feature}
                             onChange={(e) => handleListChange('features', index, e.target.value)}
                           />
                           <Button
-                            disabled={isLoading}
+                            disabled={isLoading || isProductUpdating}
                             variant='outline'
                             onClick={() => handleRemoveItem('features', index)}
                           >
@@ -192,7 +210,7 @@ export const Product = ({id}) => {
                           </Button>
                         </li>
                       ))}
-                      <Button onClick={() => handleAddItem('features')} disabled={isLoading}>
+                      <Button onClick={() => handleAddItem('features')} disabled={isLoading || isProductUpdating}>
                         Добавить характеристику
                       </Button>
                     </ul>
@@ -205,13 +223,13 @@ export const Product = ({id}) => {
                       {productDetails?.benefits?.map((benefit, index) => (
                         <li key={index} className='flex gap-2'>
                           <Input
-                            disabled={isLoading}
+                            disabled={isLoading || isProductUpdating}
                             type='text'
                             value={benefit}
                             onChange={(e) => handleListChange('benefits', index, e.target.value)}
                           />
                           <Button
-                            disabled={isLoading}
+                            disabled={isLoading || isProductUpdating}
                             variant='outline'
                             onClick={() => handleRemoveItem('benefits', index)}
                           >
@@ -219,7 +237,7 @@ export const Product = ({id}) => {
                           </Button>
                         </li>
                       ))}
-                      <Button disabled={isLoading} onClick={() => handleAddItem('benefits')}>
+                      <Button disabled={isLoading || isProductUpdating} onClick={() => handleAddItem('benefits')}>
                         Добавить преимущество
                       </Button>
                     </ul>
@@ -237,7 +255,7 @@ export const Product = ({id}) => {
                   <div className='grid gap-3'>
                     <Label htmlFor='targetAudience'>Целевая аудитория</Label>
                     <Input
-                      disabled={isLoading}
+                      disabled={isLoading || isProductUpdating}
                       id='targetAudience'
                       name='targetAudience'
                       value={productDetails?.targetAudience}
@@ -248,7 +266,7 @@ export const Product = ({id}) => {
                   <div className='grid gap-3'>
                     <Label htmlFor='marketAnalysis'>Анализ рынка</Label>
                     <Textarea
-                      disabled={isLoading}
+                      disabled={isLoading || isProductUpdating}
                       id='marketAnalysis'
                       name='marketAnalysis'
                       value={productDetails?.marketAnalysis}
@@ -258,7 +276,7 @@ export const Product = ({id}) => {
                   <div className='grid gap-3'>
                     <Label htmlFor='competitiveAdvantage'>Конкурентные преимущества</Label>
                     <Textarea
-                      disabled={isLoading}
+                      disabled={isLoading || isProductUpdating}
                       id='competitiveAdvantage'
                       name='competitiveAdvantage'
                       value={productDetails?.competitiveAdvantage}
@@ -278,7 +296,7 @@ export const Product = ({id}) => {
                   <div className='grid gap-3'>
                     <Label htmlFor='estimatedBudget'>Предполагаемый бюджет и сроки</Label>
                     <Textarea
-                      disabled={isLoading}
+                      disabled={isLoading || isProductUpdating}
                       id='estimatedBudget'
                       name='estimatedBudget'
                       value={productDetails?.estimatedBudget}
@@ -289,7 +307,7 @@ export const Product = ({id}) => {
                   <div className='grid gap-3'>
                     <Label htmlFor='potentialChallenges'>Возможные проблемы и пути их решения</Label>
                     <Textarea
-                      disabled={isLoading}
+                      disabled={isLoading || isProductUpdating}
                       id='potentialChallenges'
                       name='potentialChallenges'
                       value={productDetails?.potentialChallenges}
@@ -299,7 +317,7 @@ export const Product = ({id}) => {
                   <div className='grid gap-3'>
                     <Label htmlFor='additionalRecommendations'>Дополнительные рекомендации</Label>
                     <Textarea
-                      disabled={isLoading}
+                      disabled={isLoading || isProductUpdating}
                       id='additionalRecommendations'
                       name='additionalRecommendations'
                       value={productDetails?.additionalRecommendations}
@@ -320,7 +338,7 @@ export const Product = ({id}) => {
                   <div className='grid gap-3'>
                     <Label htmlFor='uniqueOffer'>Уникальное торговое предложение</Label>
                     <Textarea
-                      disabled={isLoading}
+                      disabled={isLoading || isProductUpdating}
                       id='uniqueOffer'
                       name='uniqueOffer'
                       value={productDetails?.uniqueOffer}
@@ -340,7 +358,11 @@ export const Product = ({id}) => {
                 <div className='grid gap-6'>
                   <div className='grid gap-3'>
                     <Label htmlFor='status'>Обновить приоритет</Label>
-                    <Select disabled={isLoading}>
+                    <Select
+                      disabled={isLoading || isProductUpdating}
+                      value={priority}
+                      onValueChange={(val) => setPriority(val)}
+                    >
                       <SelectTrigger id='status' aria-label='Select status'>
                         <SelectValue placeholder='Выберите приоритет' />
                       </SelectTrigger>
@@ -363,7 +385,7 @@ export const Product = ({id}) => {
               </CardHeader>
               <CardContent>
                 <div></div>
-                <Button disabled={isLoading} size='sm' variant='secondary'>
+                <Button disabled={isLoading || isProductUpdating} size='sm' variant='secondary'>
                   Добавить в избранное
                 </Button>
               </CardContent>
@@ -371,10 +393,13 @@ export const Product = ({id}) => {
           </div>
         </div>
         <div className='flex items-center justify-center gap-2 md:hidden'>
-          <Button variant='outline' size='sm'>
+          <Button variant='outline' size='sm' onClick={resetProductUpdates}>
             Вернуть назад
           </Button>
-          <Button size='sm'>Сохранить</Button>
+          <Button size='sm' onClick={handleUpdateProduct}>
+            {isProductUpdating && <Icons.spinner className='mr-2 h-4 w-4 animate-spin' />}
+            Сохранить
+          </Button>
         </div>
       </div>
     </main>

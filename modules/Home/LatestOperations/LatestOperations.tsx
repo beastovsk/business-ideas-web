@@ -6,6 +6,7 @@ import {Skeleton} from '@/components/ui/skeleton';
 import {getAllOperations} from '@/data/api/operations';
 import {formatProductPrice} from '@/src/helpers/hooks';
 import {useQuery} from 'react-query';
+import moment from 'moment';
 
 export const LatestOperations = () => {
   const {data, isLoading, isSuccess} = useQuery('latestOperations', () => getAllOperations({isLatest: true}));
@@ -32,10 +33,10 @@ export const LatestOperations = () => {
                 </Avatar>
                 <div className='grid gap-1'>
                   <p className='text-sm font-medium leading-none'>{type}</p>
-                  <p className='text-sm text-muted-foreground'>{date}</p>
+                  <p className='text-sm text-muted-foreground'>{moment(date).format('DD-MM-YYYY')}</p>
                 </div>
                 <div className='ml-auto font-medium'>
-                  {type === 'receive' || type === 'cancel' ? '+' : '-'}
+                  {type === 'Пополнение' || type === 'Возврат' ? '+' : '-'}
                   {formatProductPrice(amount)}
                 </div>
               </div>
