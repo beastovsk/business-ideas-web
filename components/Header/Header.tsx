@@ -7,7 +7,7 @@ import {Sheet, SheetClose, SheetContent, SheetTrigger} from '../ui/sheet';
 import {usePathname, useRouter} from 'next/navigation';
 import {DonateModal} from '../DonateModal/DonateModal';
 import {useEffect} from 'react';
-import {getCookie, setCookie} from 'cookies-next';
+import {deleteCookie, getCookie, setCookie} from 'cookies-next';
 import {useToast} from '../ui/use-toast';
 import {useQuery} from 'react-query';
 import {GetUser} from '@/data/api/user';
@@ -28,8 +28,9 @@ export const Header = () => {
   useEffect(() => {
     const token = getCookie('token');
 
-    if (!token || !data?.user) {
+    if (!token || data?.user === null) {
       toast({title: 'Уведомление', description: 'Сессия завершена, пожалуйста перезайдите в аккаунт'});
+      deleteCookie('token');
       return push('/login');
     }
 
