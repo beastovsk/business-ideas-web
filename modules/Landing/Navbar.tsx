@@ -3,10 +3,8 @@ import {useState} from 'react';
 import {NavigationMenu, NavigationMenuItem, NavigationMenuList} from '@/components/ui/navigation-menu';
 import {Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger} from '@/components/ui/sheet';
 
-import {GitHubLogoIcon} from '@radix-ui/react-icons';
 import {buttonVariants} from '@/components/ui/button';
-import {Menu} from 'lucide-react';
-import {LogoIcon} from './Icons';
+import {ArrowRight, BriefcaseBusiness, Menu} from 'lucide-react';
 
 interface RouteProps {
   href: string;
@@ -39,9 +37,9 @@ export const Navbar = () => {
       <NavigationMenu className='mx-auto'>
         <NavigationMenuList className='container h-14 px-4 w-screen flex justify-between '>
           <NavigationMenuItem className='font-bold flex'>
-            <a rel='noreferrer noopener' href='/' className='ml-2 font-bold text-xl flex'>
-              <LogoIcon />
-              ShadcnUI/React
+            <a rel='noreferrer noopener' href='/' className='ml-2 font-bold text-xl flex items-center'>
+              <BriefcaseBusiness className='mr-2' />
+              Startup Idea
             </a>
           </NavigationMenuItem>
 
@@ -56,7 +54,7 @@ export const Navbar = () => {
 
               <SheetContent side={'left'}>
                 <SheetHeader>
-                  <SheetTitle className='font-bold text-xl'>Shadcn/React</SheetTitle>
+                  <SheetTitle className='font-bold text-xl'>Startup Idea</SheetTitle>
                 </SheetHeader>
                 <nav className='flex flex-col justify-center items-center gap-2 mt-4'>
                   {routeList.map(({href, label}: RouteProps) => (
@@ -78,8 +76,7 @@ export const Navbar = () => {
                       variant: 'secondary'
                     })}`}
                   >
-                    <GitHubLogoIcon className='mr-2 w-5 h-5' />
-                    Github
+                    Начать <ArrowRight className='ml-2 w-5 h-5' />
                   </a>
                 </nav>
               </SheetContent>
@@ -109,8 +106,7 @@ export const Navbar = () => {
               target='_blank'
               className={`border ${buttonVariants({variant: 'secondary'})}`}
             >
-              <GitHubLogoIcon className='mr-2 w-5 h-5' />
-              Github
+              Начать <ArrowRight className='ml-2 w-5 h-5' />
             </a>
           </div>
         </NavigationMenuList>
