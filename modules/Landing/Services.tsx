@@ -11,21 +11,20 @@ interface ServiceProps {
 
 const serviceList: ServiceProps[] = [
   {
-    title: 'Code Collaboration',
+    title: 'Потенциал',
     description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.',
+      'Наша платформа сортирует продукты на основе исторических данных и мы не пропускаем продукты с пустым будущим',
     icon: <ChartIcon />
   },
   {
-    title: 'Project Management',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.',
+    title: 'Финансовый потенциал',
+    description: 'Генерируем продукты с хорошим показателем доходности, применив рекомендации - вы сможете построить надежный бизнес',
     icon: <WalletIcon />
   },
   {
-    title: 'Task Automation',
+    title: 'Конкурентность',
     description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.',
+      'Ваш новый продукт будет полностью соответствовать рынку и мы дадим вам слабые стороны ваших конкурентов, улучшив которые - вы сможете забрать рынок себе',
     icon: <MagnifierIcon />
   }
 ];
@@ -36,14 +35,16 @@ export const Services = () => {
       <div className='grid lg:grid-cols-[1fr,1fr] gap-8 place-items-center'>
         <div>
           <h2 className='text-3xl md:text-4xl font-bold'>
+            Как
             <span className='bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text'>
-              Client-Centric{' '}
-            </span>
-            Services
+              {' '}
+              генерируются
+            </span>{' '}
+            продукты?
           </h2>
 
           <p className='text-muted-foreground text-xl mt-4 mb-8 '>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis dolor.
+            В процессе генерации ИИ допускает продукты, которые проходят минимум два пункта
           </p>
 
           <div className='flex flex-col gap-8'>

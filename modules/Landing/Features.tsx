@@ -33,25 +33,26 @@ const features: FeatureProps[] = [
 ];
 
 const featureList: string[] = [
-  'Dark/Light theme',
-  'Reviews',
-  'Features',
-  'Pricing',
-  'Contact form',
-  'Our team',
-  'Responsive design',
-  'Newsletter',
-  'Minimalist'
+  'Название',
+  'Описание',
+  'Характеристики',
+  'Преимущества',
+  'Целевая аудитория',
+  'Анализ рынка',
+  'Конкурентные преимущества',
+  'Предполагаемый бюджет и сроки',
+  'Возможные проблемы и пути их решения',
+  'Дополнительные рекомендации',
+  'Уникальное торговое предложение'
 ];
 
 export const Features = () => {
   return (
     <section id='features' className='container py-24 sm:py-32 space-y-8'>
       <h2 className='text-3xl lg:text-4xl font-bold md:text-center'>
-        Большое{' '}
-        <span className='bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text'>
-          Количество Преимуществ
-        </span>
+        Вот что{' '}
+        <span className='bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text'>Startup Idea</span>{' '}
+        гарантированно покажет
       </h2>
 
       <div className='flex flex-wrap md:justify-center gap-4'>
@@ -64,7 +65,7 @@ export const Features = () => {
         ))}
       </div>
 
-      <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-8'>
+      {/* <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-8'>
         {features.map(({title, description, image}: FeatureProps) => (
           <Card key={title}>
             <CardHeader>
@@ -78,7 +79,7 @@ export const Features = () => {
             </CardFooter>
           </Card>
         ))}
-      </div>
+      </div> */}
     </section>
   );
 };
