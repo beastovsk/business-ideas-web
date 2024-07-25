@@ -8,6 +8,7 @@ import Head from 'next/head';
 import YandexMetrika from 'next-yandex-metrika';
 import {ThemeButton} from '@/components/ThemeButton/ThemeButton';
 import {keywords} from '@/src/helpers/keywords';
+import Script from 'next/script';
 
 const gilroy = localFont({
   src: [
@@ -39,8 +40,7 @@ export const metadata: Metadata = {
     default: 'Startup Idea',
     template: `%s | Startup Idea`
   },
-  description:
-    'Startup Idea - инновационный сервис, который использует искусственный интеллект для создания уникальных продуктов. Оптимизируйте ваш бизнес с помощью передовых технологий генерации идей и продуктов. Начните внедрять будущее уже сегодня!',
+  description: 'Находим бизнес-продукты с помощью ИИ',
   keywords: keywords,
   robots: {
     index: true,
@@ -70,6 +70,20 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
           <ClientProvider>{children}</ClientProvider>
         </main>
       </body>
+      <Script type='text/javascript'>
+        {`(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();
+   for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+   k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(97919705, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+   });`}
+      </Script>
     </html>
   );
 }
