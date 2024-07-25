@@ -22,9 +22,9 @@ const pricingList: PricingProps[] = [
   {
     title: 'Генерация продукта',
     popular: 1,
-    price: 100,
+    price: 300,
     description: 'Вы получаете все то, о чем мы писали выше',
-    buttonText: 'Получить 300₽ бесплатно',
+    buttonText: 'Получить продукт бесплатно',
     benefitList: [
       'Общая информация о продукте',
       'Характеристики и преимущества',

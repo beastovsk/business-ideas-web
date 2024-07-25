@@ -105,7 +105,7 @@ export const HeroCards = () => {
             <span className='text-muted-foreground'> за регистрацию</span>
           </div>
 
-          <CardDescription>Подходит для генерации 3-ех проектов</CardDescription>
+          <CardDescription>Подходит для генерации полноценного проекта</CardDescription>
         </CardHeader>
 
         <CardContent>
