@@ -5,6 +5,8 @@ import {Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger} from '@/comp
 
 import {buttonVariants} from '@/components/ui/button';
 import {ArrowRight, BriefcaseBusiness, Menu} from 'lucide-react';
+import {getCookie} from 'cookies-next';
+import Link from 'next/link';
 
 interface RouteProps {
   href: string;
@@ -14,23 +16,24 @@ interface RouteProps {
 const routeList: RouteProps[] = [
   {
     href: '#features',
-    label: 'Features'
+    label: 'Преимущества'
   },
   {
-    href: '#testimonials',
-    label: 'Testimonials'
+    href: '#howItWorks',
+    label: 'Как это работает?'
   },
   {
     href: '#pricing',
-    label: 'Pricing'
+    label: 'Цены'
   },
   {
     href: '#faq',
-    label: 'FAQ'
+    label: 'Вопросы'
   }
 ];
 
 export const Navbar = () => {
+  const token = getCookie('token');
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <header className='sticky border-b-[1px] top-0 z-40 w-full bg-white dark:border-b-slate-700 dark:bg-background'>
@@ -86,7 +89,7 @@ export const Navbar = () => {
           {/* desktop */}
           <nav className='hidden md:flex gap-2'>
             {routeList.map((route: RouteProps, i) => (
-              <a
+              <Link
                 rel='noreferrer noopener'
                 href={route.href}
                 key={i}
@@ -95,19 +98,18 @@ export const Navbar = () => {
                 })}`}
               >
                 {route.label}
-              </a>
+              </Link>
             ))}
           </nav>
 
           <div className='hidden md:flex gap-2'>
-            <a
+            <Link
               rel='noreferrer noopener'
-              href='https://github.com/leoMirandaa/shadcn-landing-page.git'
-              target='_blank'
+              href={token ? '/home' : '/register'}
               className={`border ${buttonVariants({variant: 'secondary'})}`}
             >
-              Начать <ArrowRight className='ml-2 w-5 h-5' />
-            </a>
+              {token ? 'Продолжить' : 'Начать'} <ArrowRight className='ml-2 w-5 h-5' />
+            </Link>
           </div>
         </NavigationMenuList>
       </NavigationMenu>

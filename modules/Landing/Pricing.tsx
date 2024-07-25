@@ -2,6 +2,7 @@ import {Badge} from '@/components/ui/badge';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from '@/components/ui/card';
 import {Check} from 'lucide-react';
+import Link from 'next/link';
 
 enum PopularPlanType {
   NO = 0,
@@ -24,7 +25,13 @@ const pricingList: PricingProps[] = [
     price: 100,
     description: 'Вы получаете все то, о чем мы писали выше',
     buttonText: 'Получить 300₽ бесплатно',
-    benefitList: ['Общая информация о продукте', 'Характеристики и преимущества', 'Информация о рынке и аудитории', 'Информация о создании продукта', 'Уникальное торговое предложение']
+    benefitList: [
+      'Общая информация о продукте',
+      'Характеристики и преимущества',
+      'Информация о рынке и аудитории',
+      'Информация о создании продукта',
+      'Уникальное торговое предложение'
+    ]
   }
 ];
 
@@ -68,7 +75,9 @@ export const Pricing = () => {
             </CardHeader>
 
             <CardContent>
-              <Button className='w-full'>{pricing.buttonText}</Button>
+              <Link href='/register'>
+                <Button className='w-full'>{pricing.buttonText}</Button>
+              </Link>
             </CardContent>
 
             <hr className='w-4/5 m-auto mb-4' />

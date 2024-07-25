@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import React, {useEffect} from 'react';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useForm} from 'react-hook-form';
 import * as z from 'zod';
@@ -15,7 +15,7 @@ import {useMutation} from 'react-query';
 import {ConfirmEmail, LoginRequest, RegRequest} from '@/data/api/auth';
 import {usePathname, useRouter} from 'next/navigation';
 import {useToast} from '../ui/use-toast';
-import {setCookie} from 'cookies-next';
+import {getCookie, setCookie} from 'cookies-next';
 import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle} from '../ui/dialog';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -38,6 +38,7 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
   const {mutate: reg, isLoading: isRegLoading} = useMutation(RegRequest);
   const {mutate: confirm, isLoading: isConfirmLoading} = useMutation(ConfirmEmail);
 
+  const token = getCookie('token');
   const {toast} = useToast();
   const {push} = useRouter();
 
@@ -82,6 +83,12 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
       }
     });
   };
+
+  useEffect(() => {
+    if (token) {
+      push('/home');
+    }
+  }, [token]);
 
   return (
     <div className={cn('grid gap-6', className)} {...props}>

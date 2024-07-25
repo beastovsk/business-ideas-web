@@ -2,6 +2,14 @@ import {Radar} from 'lucide-react';
 
 import mh from '@/src/assets/mh.svg';
 import Image from 'next/image';
+import {HoverCard, HoverCardContent, HoverCardTrigger} from '@/components/ui/hover-card';
+import {CalendarIcon} from '@radix-ui/react-icons';
+
+import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
+import {Button} from '@/components/ui/button';
+
+import mhLogo from '@/src/assets/mh-logo.png';
+import Link from 'next/link';
 
 interface SponsorProps {
   icon: JSX.Element;
@@ -30,8 +38,35 @@ export const Sponsors = () => {
             <span>{icon}</span>
             <h3 className='text-xl  font-bold'>{name}</h3>
           </div>
-        ))}
-        <Image src={mh} alt='' width={150} height={150} />
+        ))}{' '}
+        <HoverCard>
+          <HoverCardTrigger asChild>
+            <Button variant='link' className='hover:opacity-70 transition-opacity'>
+              {' '}
+              <Image src={mh} alt='' width={150} height={150} />
+            </Button>
+          </HoverCardTrigger>
+          <HoverCardContent className='w-80'>
+            <div className='flex justify-between space-x-4'>
+              <Avatar>
+                <AvatarImage src={mhLogo.src} />
+                <AvatarFallback>MH</AvatarFallback>
+              </Avatar>
+              <div className='space-y-1'>
+                <Link href='https://marketing-helper.ru' className='hover:opacity-70 transition-opacity'>
+                  <h4 className='text-sm font-semibold'>@marketing-helper</h4>
+                </Link>
+                <p className='text-sm'>
+                  Анализируем ваши продукты для бизнеса с помощью ИИ и даем рекомендации для улучшения
+                </p>
+                <div className='flex items-center pt-2'>
+                  <CalendarIcon className='mr-2 h-4 w-4 opacity-70' />{' '}
+                  <span className='text-xs text-muted-foreground'>С нами с 2023 года</span>
+                </div>
+              </div>
+            </div>
+          </HoverCardContent>
+        </HoverCard>
       </div>
     </section>
   );

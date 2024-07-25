@@ -1,7 +1,12 @@
+'use client';
+
 import {Button} from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
+import {useToast} from '@/components/ui/use-toast';
 
 export const Newsletter = () => {
+  const {toast} = useToast();
+
   return (
     <div id='newsletter'>
       <hr className='w-11/12 mx-auto' />
@@ -19,7 +24,14 @@ export const Newsletter = () => {
 
         <div className='flex flex-col w-full md:flex-row md:w-6/12 lg:w-4/12 mx-auto gap-4 md:gap-2'>
           <Input placeholder='templatemail@mail.ru' className='bg-muted/50 dark:bg-muted/80 ' aria-label='email' />
-          <Button>Подписаться</Button>
+          <Button
+            className='hover:opacity-70 transition-opacity'
+            onClick={() =>
+              toast({title: 'Подписка оформлена', description: 'Спасибо за ваше доверие к нашему сервису'})
+            }
+          >
+            Подписаться
+          </Button>
         </div>
       </div>
 

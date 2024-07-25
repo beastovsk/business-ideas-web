@@ -11,8 +11,11 @@ import me from '@/src/assets/me.jpg';
 import tg from '@/src/assets/tg.svg';
 import Image from 'next/image';
 import Link from 'next/link';
+import {getCookie} from 'cookies-next';
 
 export const HeroCards = () => {
+  const token = getCookie('token');
+
   return (
     <div className='hidden lg:flex flex-row flex-wrap gap-8 relative w-[700px] h-[500px]'>
       {/* Testimonial */}
@@ -53,7 +56,10 @@ export const HeroCards = () => {
         </CardHeader>
 
         <CardContent className='text-center pb-4'>
-          <p>Мы построили продукт, который сэкономит вам сил и креативности, используйте их в индивидуальность вашего продукта </p>
+          <p>
+            Мы построили продукт, который сэкономит вам сил и креативности, используйте их в индивидуальность вашего
+            продукта{' '}
+          </p>
         </CardContent>
 
         <CardFooter>
@@ -104,7 +110,9 @@ export const HeroCards = () => {
         </CardHeader>
 
         <CardContent>
-          <Button className='w-full'>Начать бесплатно</Button>
+          <Link href={token ? '/home' : '/register'}>
+            <Button className='w-full'>{token ? 'Продолжить' : 'Начать бесплатно'}</Button>
+          </Link>
         </CardContent>
 
         <hr className='w-4/5 m-auto mb-4' />

@@ -1,9 +1,13 @@
 import {Button, buttonVariants} from '@/components/ui/button';
 import {HeroCards} from './HeroCards';
-import {GitHubLogoIcon} from '@radix-ui/react-icons';
 import {ArrowDown} from 'lucide-react';
 
+import Link from 'next/link';
+import {getCookie} from 'cookies-next';
+
 export const Hero = () => {
+  const token = getCookie('token');
+
   return (
     <section className='container grid lg:grid-cols-2 place-items-center py-20 md:py-32 gap-10'>
       <div className='text-center lg:text-start space-y-6'>
@@ -28,8 +32,9 @@ export const Hero = () => {
         </p>
 
         <div className='space-y-4 md:space-y-0 md:space-x-4'>
-          <Button className='w-full md:w-1/3'>Начать</Button>
-
+          <Link href={token ? '/home' : '/register'}>
+            <Button className='w-full md:w-1/3'>{token ? 'Продолжить' : 'Начать'}</Button>
+          </Link>
           <a
             rel='noreferrer noopener'
             href='#features'

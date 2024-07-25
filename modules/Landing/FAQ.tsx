@@ -1,91 +1,104 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from '@/components/ui/accordion';
+import Link from 'next/link';
 
 interface FAQProps {
   question: string;
-  answer: string;
+  answer: any;
   value: string;
 }
 
 const FAQList: FAQProps[] = [
   {
-    question: "Is this template free?",
-    answer: "Yes. It is a free ChadcnUI template.",
-    value: "item-1",
-  },
-  {
-    question: "Lorem ipsum dolor sit amet consectetur adipisicing elit?",
+    question: 'Что такое StartupIdea?',
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint labore quidem quam? Consectetur sapiente iste rerum reiciendis animi nihil nostrum sit quo, modi quod.",
-    value: "item-2",
+      'StartupIdea - это платформа, которая помогает генерировать бизнес-идеи на основе ваших интересов и предпочтений. Заполните простую форму, и наш ИИ предложит уникальные и креативные идеи для стартапа.',
+    value: 'item-1'
   },
   {
-    question:
-      "Lorem ipsum dolor sit amet  Consectetur natus dolores minus quibusdam?",
+    question: 'Как это работает?',
+    answer: (
+      <>
+        Процесс прост: <br /> 1. Заполните нашу форму, указав свои интересы, навыки и предпочтения. <br /> 2. Наш ИИ
+        проанализирует ваши ответы и сгенерирует несколько уникальных бизнес-идей. <br /> 3. Получите идеи и начните
+        работать над своим новым стартапом!
+      </>
+    ),
+    value: 'item-2'
+  },
+  {
+    question: 'Какие данные мне нужно предоставить?',
     answer:
-      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore qui nostrum reiciendis veritatis necessitatibus maxime quis ipsa vitae cumque quo?",
-    value: "item-3",
+      'Мы просим вас предоставить информацию о ваших интересах, навыках, опыте, а также предпочитаемой индустрии и целевой аудитории. Чем больше деталей вы предоставите, тем точнее и релевантнее будут наши предложения.',
+    value: 'item-3'
   },
   {
-    question: "Lorem ipsum dolor sit amet, consectetur adipisicing elit?",
-    answer: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
-    value: "item-4",
-  },
-  {
-    question:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur natus?",
+    question: 'Насколько уникальны генерируемые идеи?',
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint labore quidem quam? Consectetur sapiente iste rerum reiciendis animi nihil nostrum sit quo, modi quod.",
-    value: "item-5",
+      'Наш ИИ использует сложные алгоритмы и обширные базы данных для генерации действительно уникальных и инновационных идей. Каждое предложение тщательно анализируется, чтобы избежать дублирования существующих проектов.',
+    value: 'item-4'
   },
+  {
+    question: 'Нужно ли мне платить за использование сервиса?',
+    answer:
+      'Мы предлагаем бесплатную версию с ограниченным количеством идей. Для доступа к более детальным и разнообразным идеям, а также дополнительным функциям, вы можете приобретать идею через баланс в личном кабинете',
+    value: 'item-5'
+  },
+  {
+    question: 'Могу ли я использовать сгенерированные идеи для своего бизнеса?',
+    answer:
+      'Да, все идеи, которые вы получаете через наш сервис, предназначены для вашего личного использования. Вы можете свободно использовать их для создания собственного бизнеса.',
+    value: 'item-6'
+  },
+  {
+    question: 'Как защищены мои данные?',
+    answer:
+      'Мы серьезно относимся к конфиденциальности ваших данных. Все предоставленные вами сведения защищены и используются исключительно для генерации идей. Мы не передаем ваши данные третьим лицам.',
+    value: 'item-7'
+  },
+  {
+    question: 'Что делать, если у меня есть вопросы или проблемы с использованием сервиса?',
+    answer: (
+      <>
+        Если у вас возникли вопросы или проблемы, вы можете связаться с нашей{' '}
+        <Link className='text-blue-500 hover:opacity-70 transition-opacity' href='https://t.me/beastovsk'>
+          службой поддержки
+        </Link>
+        . Мы будем рады помочь вам в любое время.
+      </>
+    ),
+    value: 'item-8'
+  },
+  {
+    question: 'Могу ли я делиться полученными идеями с другими?',
+    answer:
+      'Да, вы можете делиться идеями с партнерами или инвесторами. Однако мы рекомендуем использовать идеи для личного бизнеса, чтобы сохранить конкурентное преимущество.',
+    value: 'item-9'
+  },
+  {
+    question: 'Что делать, если я не нашел подходящую идею?',
+    answer:
+      'Если предложенные идеи не соответствуют вашим ожиданиям, попробуйте заполнить форму еще раз, предоставив более детальную информацию о ваших интересах и предпочтениях. Также вы можете связаться с нами для получения персонализированной помощи.',
+    value: 'item-10'
+  }
 ];
 
 export const FAQ = () => {
   return (
-    <section
-      id="faq"
-      className="container py-24 sm:py-32"
-    >
-      <h2 className="text-3xl md:text-4xl font-bold mb-4">
-        Frequently Asked{" "}
-        <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
-          Questions
-        </span>
+    <section id='faq' className='container py-24 sm:py-32'>
+      <h2 className='text-3xl md:text-4xl font-bold mb-4'>
+        Частозадаваемые{' '}
+        <span className='bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text'>вопросы</span>
       </h2>
 
-      <Accordion
-        type="single"
-        collapsible
-        className="w-full AccordionRoot"
-      >
-        {FAQList.map(({ question, answer, value }: FAQProps) => (
-          <AccordionItem
-            key={value}
-            value={value}
-          >
-            <AccordionTrigger className="text-left">
-              {question}
-            </AccordionTrigger>
+      <Accordion type='single' collapsible className='w-full AccordionRoot'>
+        {FAQList.map(({question, answer, value}: FAQProps) => (
+          <AccordionItem key={value} value={value}>
+            <AccordionTrigger className='text-left'>{question}</AccordionTrigger>
 
             <AccordionContent>{answer}</AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>
-
-      <h3 className="font-medium mt-4">
-        Still have questions?{" "}
-        <a
-          rel="noreferrer noopener"
-          href="#"
-          className="text-primary transition-all border-primary hover:border-b-2"
-        >
-          Contact us
-        </a>
-      </h3>
     </section>
   );
 };
