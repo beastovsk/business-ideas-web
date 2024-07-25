@@ -9,16 +9,21 @@ import {DonateModal} from '../DonateModal/DonateModal';
 import {useEffect} from 'react';
 import {deleteCookie, getCookie, setCookie} from 'cookies-next';
 import {useToast} from '../ui/use-toast';
-import {useQuery} from 'react-query';
+import {useMutation, useQuery} from 'react-query';
 import {GetUser} from '@/data/api/user';
 import {Skeleton} from '../ui/skeleton';
 import {formatProductPrice} from '@/src/helpers/hooks';
+import {useSearchParams} from 'next/navigation';
+import {ConfirmTransaction} from '@/data/api/user';
 
 export const Header = () => {
   const pathname = usePathname();
   const {push} = useRouter();
   const {toast} = useToast();
+  const search = useSearchParams();
+  const hasPaymentStatus = Boolean(search.get('paymentStatus'));
 
+  const {mutate, isLoading: isConfirmLoading} = useMutation(ConfirmTransaction);
   const {data, isLoading, isSuccess} = useQuery('user', GetUser);
 
   const getLinkClassName = (path) => {
@@ -37,6 +42,31 @@ export const Header = () => {
     if (isSuccess) {
       setCookie('email', data?.user?.email);
     }
+
+    if (!hasPaymentStatus) return;
+
+    if (isConfirmLoading) {
+      toast({title: 'Проверяем статус оплаты', description: 'Подождите несколько секунд, мы проверяем ваш платеж'});
+    }
+
+    const uuid = localStorage.getItem('uuid');
+    const paymentMethod = localStorage.getItem('paymentMethod');
+
+    mutate(
+      {uuid, paymentMethod},
+      {
+        onSuccess: (data) => {
+          if (data.message) {
+            toast({
+              title: 'Уведомление по платежу',
+              description: data.message
+            });
+          }
+
+          push('/home');
+        }
+      }
+    );
   }, [data]);
 
   return (

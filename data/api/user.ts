@@ -67,3 +67,17 @@ export const CreateTransaction = async (args: {
     return data.json();
   });
 };
+export const ConfirmTransaction = async (args: {uuid: string; paymentMethod: string}) => {
+  return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/createTransaction`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${getCookie('token')}`
+    },
+    method: 'POST',
+    body: JSON.stringify(args)
+  }).then((data) => {
+    if (!data.ok) return;
+    return data.json();
+  });
+};
