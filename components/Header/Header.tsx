@@ -15,6 +15,7 @@ import {Skeleton} from '../ui/skeleton';
 import {formatProductPrice} from '@/src/helpers/hooks';
 import {useSearchParams} from 'next/navigation';
 import {ConfirmTransaction} from '@/data/api/user';
+import {getAllOperations} from '@/data/api/operations';
 
 export const Header = () => {
   const pathname = usePathname();
@@ -24,7 +25,8 @@ export const Header = () => {
   const hasPaymentStatus = Boolean(search.get('paymentStatus'));
 
   const {mutate, isLoading: isConfirmLoading} = useMutation(ConfirmTransaction);
-  const {data, isLoading, isSuccess} = useQuery('user', GetUser);
+  const {data, isLoading, isSuccess, refetch} = useQuery('user', GetUser);
+  const {refetch: operationRefetch} = useQuery('operations', () => getAllOperations({isLatest: false}));
 
   const getLinkClassName = (path) => {
     return pathname === path ? 'text-foreground' : 'text-muted-foreground';
@@ -51,22 +53,31 @@ export const Header = () => {
 
     const uuid = localStorage.getItem('uuid');
     const paymentMethod = localStorage.getItem('paymentMethod');
+    const amount = localStorage.getItem('amount');
 
-    mutate(
-      {uuid, paymentMethod},
-      {
-        onSuccess: (data) => {
-          if (data.message) {
-            toast({
-              title: 'Уведомление по платежу',
-              description: data.message
-            });
+    if (isSuccess) {
+      mutate(
+        {uuid, paymentMethod, amount},
+        {
+          onSuccess: (data) => {
+            if (data.message) {
+              toast({
+                title: 'Уведомление по платежу',
+                description: data.message
+              });
+            }
+
+            localStorage.removeItem('uuid');
+            localStorage.removeItem('paymentMethod');
+            localStorage.removeItem('amount');
+
+            operationRefetch();
+            refetch();
+            push('/home');
           }
-
-          push('/home');
         }
-      }
-    );
+      );
+    }
   }, [data]);
 
   return (

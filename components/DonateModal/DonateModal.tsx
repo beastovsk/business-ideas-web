@@ -23,6 +23,7 @@ import {useMutation, useQuery} from 'react-query';
 import {CreateTransaction, GetUser} from '@/data/api/user';
 import {Icons} from '../ui/icons';
 import {useToast} from '../ui/use-toast';
+import {useRouter} from 'next/navigation';
 
 const paymentMethods = [
   {label: 'Карта', value: 'card', icon: <CreditCard />}
@@ -49,6 +50,7 @@ export const DonateModal = () => {
   } = useForm<DonateFormValues>({
     resolver: zodResolver(donateSchema)
   });
+  const {push} = useRouter();
 
   const onSubmit = ({amount, fullName, paymentMethod, phoneNumber}: DonateFormValues) => {
     refetch();
@@ -57,7 +59,12 @@ export const DonateModal = () => {
       {amount, fullName, paymentMethod, phoneNumber},
       {
         onSuccess: (data) => {
-          if (data.message) toast({title: 'Уведомление о пополнении', description: data.message});
+          if (data.message) toast({title: 'Уведомление о пополнении', description: data.description});
+          localStorage.setItem('paymentMethod', 'card');
+          localStorage.setItem('uuid', data.id);
+          localStorage.setItem('amount', amount);
+          push(data.confirmation.confirmation_url);
+
           refetch();
         }
       }

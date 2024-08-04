@@ -67,8 +67,8 @@ export const CreateTransaction = async (args: {
     return data.json();
   });
 };
-export const ConfirmTransaction = async (args: {uuid: string; paymentMethod: string}) => {
-  return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/createTransaction`, {
+export const ConfirmTransaction = async (args: {uuid: string; paymentMethod: string; amount: string}) => {
+  return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/confirmTransaction`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
